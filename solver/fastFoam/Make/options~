@@ -1,0 +1,21 @@
+EXE_INC = \
+    -I$(LIB_SRC)/transportModels \
+    -I$(LIB_SRC)/transportModels/incompressible/singlePhaseTransportModel \
+    -I$(LIB_SRC)/thermophysicalModels/radiation/lnInclude \
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(LIB_SRC)/sampling/lnInclude \
+    -I$(LIB_SRC)/surfMesh/lnInclude \
+    -I$(LIB_SRC)/dynamicMesh/lnInclude \
+    -I$(LIB_SRC)/meshTools/lnInclude \
+    -I../../ABLBC/lnInclude \
+
+EXE_LIBS = \
+    -lfiniteVolume \
+    -lsampling \
+    -lmeshTools \
+    -lfvOptions \
+    -lsurfMesh \
+    -lradiationModels \
+    -L$(FOAM_USER_LIBBIN)\
+    -lABLBC
+
