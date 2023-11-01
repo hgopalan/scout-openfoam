@@ -1,0 +1,191 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+  \\    /   O peration     |
+  \\  /    A nd           | www.openfoam.com
+  \\/     M anipulation  |
+  -------------------------------------------------------------------------------
+  Copyright (C) 2011-2018 OpenFOAM Foundation
+  Copyright (C) 2020 OpenCFD Ltd.
+  -------------------------------------------------------------------------------
+  License
+  This file is part of OpenFOAM.
+
+  OpenFOAM is free software: you can redistribute it and/or modify it
+  under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+  for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
+  \*---------------------------------------------------------------------------*/
+
+#include "pressureBCFvPatchScalarField.H"
+#include "volFields.H"
+#include "addToRunTimeSelectionTable.H"
+#include "scalarIOList.H"
+#include "interpolateXY.H"
+#include "surfaceFields.H"
+// * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
+
+Foam::pressureBCFvPatchScalarField::
+pressureBCFvPatchScalarField
+(
+ const fvPatch& p,
+ const DimensionedField<scalar, volMesh>& iF
+ )
+  :
+  mixedFvPatchScalarField(p, iF),
+  UName_("U")
+{}
+
+
+Foam::pressureBCFvPatchScalarField::
+pressureBCFvPatchScalarField
+(
+ const fvPatch& p,
+ const DimensionedField<scalar, volMesh>& iF,
+ const dictionary& dict
+ )
+  :
+  mixedFvPatchScalarField(p, iF),
+  UName_(dict.getOrDefault<word>("U", "U"))
+{
+  freestreamValue() = scalarField("freestreamValue", dict, p.size());
+
+  if (dict.found("value"))
+    {
+      fvPatchScalarField::operator=
+        (
+	 scalarField("value", dict, p.size())
+	 );
+    }
+  else
+    {
+      fvPatchScalarField::operator=(freestreamValue());
+    }
+
+  refGrad() = Zero;
+  valueFraction() = 0;
+}
+
+
+Foam::pressureBCFvPatchScalarField::
+pressureBCFvPatchScalarField
+(
+ const pressureBCFvPatchScalarField& ptf,
+ const fvPatch& p,
+ const DimensionedField<scalar, volMesh>& iF,
+ const fvPatchFieldMapper& mapper
+ )
+  :
+  mixedFvPatchScalarField(ptf, p, iF, mapper),
+  UName_(ptf.UName_)
+{}
+
+
+Foam::pressureBCFvPatchScalarField::
+pressureBCFvPatchScalarField
+(
+ const pressureBCFvPatchScalarField& wbppsf
+ )
+  :
+  mixedFvPatchScalarField(wbppsf),
+  UName_(wbppsf.UName_)
+{}
+
+
+Foam::pressureBCFvPatchScalarField::
+pressureBCFvPatchScalarField
+(
+ const pressureBCFvPatchScalarField& wbppsf,
+ const DimensionedField<scalar, volMesh>& iF
+ )
+  :
+  mixedFvPatchScalarField(wbppsf, iF),
+  UName_(wbppsf.UName_)
+{}
+
+
+// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+
+void Foam::pressureBCFvPatchScalarField::updateCoeffs()
+{
+  if (updated())
+    {
+      return;
+    }
+
+  const Field<vector>& Up =
+    patch().template lookupPatchField<volVectorField, vector>
+    (
+     UName_
+     );
+  valueFraction() = 0.5 + 0.5*(Up & patch().nf())/mag(Up);
+  const volScalarField p_rgh_=this->db().lookupObject<volScalarField>("p_rgh"); 
+  const scalarIOList&  Tvalues=this->db().lookupObject<scalarIOList>("timeProfile");
+  const scalarIOList& Uvalues=this->db().lookupObject<scalarIOList>("uProfile");
+  const scalarIOList& Vvalues=this->db().lookupObject<scalarIOList>("vProfile");
+  scalarField timevalues(Tvalues.size(),0.0);
+  scalarField uvalues(Tvalues.size(),0.0);
+  scalarField vvalues(Tvalues.size(),0.0);
+  forAll(Tvalues,i)
+    {
+      timevalues[i] = Tvalues[i];
+      uvalues[i] = Uvalues[i];
+      vvalues[i] = Vvalues[i];
+    }
+  scalar u1=interpolateXY(p_rgh_.time().value(),timevalues,uvalues);
+  scalar v1=interpolateXY(p_rgh_.time().value(),timevalues,vvalues);
+  scalar M=sqrt(sqr(u1)+sqr(v1));
+  const vector flowDir(u1/M,v1/M,0);    
+  vectorField patchNormal=patch().nf();
+  scalar fluxdir=sum(patchNormal & flowDir);
+  if(fluxdir>0 || patch().name()=="upper")
+    {
+      valueFraction() = 1.0 + 0*valueFraction();
+    }
+  else
+    {
+      const surfaceScalarField& phiHybA=db().lookupObject<surfaceScalarField>("phiHbyA");
+      const fvsPatchField<scalar>& phiHbyAf=patch().patchField<surfaceScalarField,scalar>(phiHybA);
+      const surfaceScalarField& rAUf=db().lookupObject<surfaceScalarField>("rAUf");
+      const fvsPatchField<scalar>& rhorAUBf=patch().patchField<surfaceScalarField,scalar>(rAUf);
+      const scalarField rhok=this->patch().lookupPatchField<volScalarField, scalar>("rhok");
+      const vectorField Uf=this->patch().lookupPatchField<volVectorField, vector>("U");
+      //valueFraction()=0*valueFraction();
+      refGrad()=(phiHbyAf-rhok*(patch().Sf() & Uf))/(rhorAUBf*patch().magSf());
+   }
+  ////  else
+  //    valueFraction() = 0.0 + 0*valueFraction();
+  mixedFvPatchField<scalar>::updateCoeffs();
+}
+
+
+void Foam::pressureBCFvPatchScalarField::write(Ostream& os) const
+{
+  fvPatchScalarField::write(os);
+  os.writeEntryIfDifferent<word>("U", "U", UName_);
+  freestreamValue().writeEntry("freestreamValue", os);
+  writeEntry("value", os);
+}
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+namespace Foam
+{
+  makePatchTypeField
+  (
+   fvPatchScalarField,
+   pressureBCFvPatchScalarField
+   );
+}
+
+// ************************************************************************* //

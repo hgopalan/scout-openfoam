@@ -1,0 +1,204 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+  \\    /   O peration     |
+  \\  /    A nd           | Copyright (C) 2011-2012 OpenFOAM Foundation
+  \\/     M anipulation  |
+  -------------------------------------------------------------------------------
+  License
+  This file is part of OpenFOAM.
+
+  OpenFOAM is free software: you can redistribute it and/or modify it
+  under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+  for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+  \*---------------------------------------------------------------------------*/
+
+
+
+#ifndef ABLMOWallNutFvPatchScalarField_H
+#define ABLMOWallNutFvPatchScalarField_H
+
+#include "fixedValueFvPatchFields.H"
+#include "addToRunTimeSelectionTable.H"
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+/*
+  !----------------------------------------------------------------------------!
+  ! Wall boundary condition for nut using Monin-Obukhov Similarity Theory      !
+  !----------------------------------------------------------------------------!                                                         
+  MOST suggests that nut = ustar * kappa * z /phiM(z/L). BC is implemented as 
+  follows: 
+  Step 1: Calculat the cell-center velocity parallel to the surface 
+  \vec{U}=\vec{U_c}-\dot{U_c,nhatV}nhatV
+  U_c is the cell-center velocity vector. nhatV is the normal vector between cell and
+  face center. 
+  Step 2: Calculate ustar from U using the following expression
+  |U| = ustar/kappa * [ log ((nc+z0)/z0)-psiM((nc+z0)/L)], where nc is distance from
+  face to cell center. 
+  Step 3: Calculate nut = ustar * kappa * (nc+z0)/phiM((nc+z0)/L)
+  The above formulation is valid for both flat and curved surfaces. 
+
+  References: 
+  (HG2018) Gopalan, H., "Evaluation of Wray-Agarwal turbulence model for simulation of 
+  neutral and non-neutral atmospheric boundary layers",JWEIA, 2018: 182, 322-329.
+
+  Log File:
+  1. 28/3/2019: Adopted for OF-v1812. 
+
+  Authors:
+  Harish Gopalan (gopalanh@ihpc.a-star.edu.sg)
+*/ 
+
+/* Usage 
+   terrain
+   {
+   type ABLMOWallNut;
+   z0 uniform 1.000000; // Roughness length in m. Default is 0.1 m. 
+   Prt 1.000000; // Default is 1.0. Change to 0.7 for thermal diffusivity. 
+   value uniform 0.9; // This is a placeholder. Use non-zero positive values. 
+   }
+*/
+
+namespace Foam
+{
+
+  /*---------------------------------------------------------------------------*\
+    Class ABLMOWallNutFvPatchScalarField Declaration
+    \*---------------------------------------------------------------------------*/
+
+  class ABLMOWallNutFvPatchScalarField
+    :
+    public fixedValueFvPatchScalarField
+  {
+  protected:
+
+    // Protected data
+    scalar Prt_;//Turbulent Prandtl number for turbulent diffusivity 
+    scalar z0_; // Roughness length in m 
+
+
+
+
+
+  public:
+
+    //- Runtime type information
+    TypeName("ABLMOWallNut");
+
+
+    // Constructors
+
+    //- Construct from patch and internal field
+    ABLMOWallNutFvPatchScalarField
+    (
+     const fvPatch&,
+     const DimensionedField<scalar, volMesh>&
+     );
+
+    //- Construct from patch, internal field and dictionary
+    ABLMOWallNutFvPatchScalarField
+    (
+     const fvPatch&,
+     const DimensionedField<scalar, volMesh>&,
+     const dictionary&
+     );
+
+    //- Construct by mapping given
+    //  ABLMOWallNutFvPatchScalarField
+    //  onto a new patch
+    ABLMOWallNutFvPatchScalarField
+    (
+     const ABLMOWallNutFvPatchScalarField&,
+     const fvPatch&,
+     const DimensionedField<scalar, volMesh>&,
+     const fvPatchFieldMapper&
+     );
+
+
+    //- Construct as copy setting internal field reference
+    ABLMOWallNutFvPatchScalarField
+    (
+     const ABLMOWallNutFvPatchScalarField&,
+     const DimensionedField<scalar, volMesh>&
+     );
+
+    //- Construct as copy
+    ABLMOWallNutFvPatchScalarField
+    (
+     const ABLMOWallNutFvPatchScalarField&
+     );
+
+    //- Construct and return a clone
+    virtual tmp<fvPatchScalarField> clone() const
+    {
+      return tmp<fvPatchScalarField>
+	(
+	 new ABLMOWallNutFvPatchScalarField(*this)
+	 );
+    }
+
+    //- Construct and return a clone setting internal field reference
+    virtual tmp<fvPatchScalarField> clone
+    (
+     const DimensionedField<scalar, volMesh>& iF
+     ) const
+    {
+      return tmp<fvPatchScalarField>
+	(
+	 new ABLMOWallNutFvPatchScalarField(*this, iF)
+	 );
+    }
+
+    // Member functions
+
+    // Acces functions
+
+    // Return access to z0
+
+    // Stability functions 
+    tmp<scalarField> neutral(scalar M,vector flowDir,scalar MOL,scalar PBLH, scalar MBL) const;
+    tmp<scalarField> veryStable(scalar M,vector flowDir,scalar MOL,scalar PBLH, scalar MBL) const;   
+    tmp<scalarField> stable(scalar M,vector flowDir,scalar MOL,scalar PBLH, scalar MBL) const;
+    tmp<scalarField> unstable(scalar M,vector flowDir,scalar MOL,scalar PBLH, scalar MBL) const;    
+
+    // Mapping functions
+
+    //- Map (and resize as needed) from self given a mapping object
+    virtual void autoMap(const fvPatchFieldMapper&);
+
+    //- Reverse map the given fvPatchField onto this fvPatchField
+    virtual void rmap
+    (
+     const fvPatchScalarField&,
+     const labelList&
+     );
+
+
+    // I-O
+    //- Update the coefficients associated with the patch field
+    using fixedValueFvPatchScalarField::updateCoeffs;
+    virtual void updateCoeffs();
+    //- Write
+    virtual void write(Ostream&) const;
+  };
+
+
+  // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace incompressible
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#endif
+
+// ************************************************************************* //

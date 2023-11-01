@@ -1,0 +1,289 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+  \\    /   O peration     |
+  \\  /    A nd           | Copyright (C) 2011-2015 OpenFOAM Foundation
+  \\/     M anipulation  |
+  -------------------------------------------------------------------------------
+  License
+  This file is part of OpenFOAM.
+
+  OpenFOAM is free software: you can redistribute it and/or modify it
+  under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+  for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
+  \*---------------------------------------------------------------------------*/
+
+#include "ABLMOWallUFvPatchVectorField.H"
+#include "addToRunTimeSelectionTable.H"
+#include "fvPatchFieldMapper.H"
+#include "volFields.H"
+#include "surfaceFields.H"
+#include "interpolateXY.H"
+#include "scalarIOList.H"
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+namespace Foam
+{
+  namespace incompressible
+  {
+
+    // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
+
+    ABLMOWallUFvPatchVectorField::
+    ABLMOWallUFvPatchVectorField
+    (
+     const fvPatch& p,
+     const DimensionedField<vector, volMesh>& iF
+     )
+      :
+      fixedValueFvPatchVectorField(p, iF),
+      kappa_(0.41),
+      z0_(0.1)
+
+    {}
+
+
+    ABLMOWallUFvPatchVectorField::
+    ABLMOWallUFvPatchVectorField
+    (
+     const fvPatch& p,
+     const DimensionedField<vector, volMesh>& iF,
+     const dictionary& dict
+     )
+      :
+      fixedValueFvPatchVectorField(p, iF),
+      kappa_(dict.lookupOrDefault<scalar>("kappa", 0.41)),
+      z0_(dict.lookupOrDefault<scalar>("z0", 0.1))
+    {
+      if (dict.found("value"))
+	{
+	  fvPatchField<vector>::operator=
+	    (
+	     vectorField("value", dict, p.size())
+	     );
+	}
+      else
+	{
+	  // Evaluate the wall velocity
+	  updateCoeffs();
+	}
+
+    }
+
+
+    ABLMOWallUFvPatchVectorField::
+    ABLMOWallUFvPatchVectorField
+    (
+     const ABLMOWallUFvPatchVectorField& pvf,
+     const fvPatch& p,
+     const DimensionedField<vector, volMesh>& iF,
+     const fvPatchFieldMapper& mapper
+     )
+      :
+      fixedValueFvPatchVectorField(pvf, p, iF, mapper),
+      kappa_(pvf.kappa_),
+      z0_(pvf.z0_)
+    {}
+
+
+    ABLMOWallUFvPatchVectorField::
+    ABLMOWallUFvPatchVectorField
+    (
+     const ABLMOWallUFvPatchVectorField& pvf,
+     const DimensionedField<vector, volMesh>& iF
+     )
+      :
+      fixedValueFvPatchVectorField(pvf, iF),
+      kappa_(pvf.kappa_),
+      z0_(pvf.z0_)
+    {}
+
+
+    // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+
+    void ABLMOWallUFvPatchVectorField::autoMap
+    (
+     const fvPatchFieldMapper& m
+     )
+    {
+      fixedValueFvPatchVectorField::autoMap(m);
+
+    }
+
+
+    void ABLMOWallUFvPatchVectorField::rmap
+    (
+     const fvPatchVectorField& pvf,
+     const labelList& addr
+     )
+    {
+      return;
+    }
+    void ABLMOWallUFvPatchVectorField::updateCoeffs()
+    {
+      if (this->updated())
+	{
+	  return;
+	}
+    const volScalarField p_rgh_=this->db().lookupObject<volScalarField>("p_rgh"); 
+    // The reference wind speed is read from constant/ABLDict. 
+    // Default: (Time U V T MOL)
+    const scalarIOList&  Tvalues=this->db().lookupObject<scalarIOList>("timeProfile");
+    const scalarIOList& Uvalues=this->db().lookupObject<scalarIOList>("uProfile");
+    const scalarIOList& Vvalues=this->db().lookupObject<scalarIOList>("vProfile");
+    const scalarIOList& MOvalues=this->db().lookupObject<scalarIOList>("MOProfile");
+    const scalarIOList& PBLHvalues=this->db().lookupObject<scalarIOList>("PBLHProfile");
+    const scalarIOList& MBLvalues=this->db().lookupObject<scalarIOList>("MBLProfile");
+    scalarField timevalues(Tvalues.size(),0.0);
+    scalarField uvalues(Tvalues.size(),0.0);
+    scalarField vvalues(Tvalues.size(),0.0);
+    scalarField movalues(Tvalues.size(),0.0);
+    scalarField pblhvalues(Tvalues.size(),0.0);
+    scalarField mblvalues(Tvalues.size(),0.0);
+    forAll(Tvalues,i)
+      {
+	timevalues[i] = Tvalues[i];
+	uvalues[i] = Uvalues[i];
+	vvalues[i] = Vvalues[i];
+	movalues[i] = MOvalues[i];
+	pblhvalues[i] = PBLHvalues[i];
+	mblvalues[i] = MBLvalues[i];
+      }
+    scalar u1=interpolateXY(p_rgh_.time().value(),timevalues,uvalues);
+    scalar v1=interpolateXY(p_rgh_.time().value(),timevalues,vvalues);
+    scalar M=sqrt(sqr(u1)+sqr(v1));
+    scalar MOL=interpolateXY(p_rgh_.time().value(),timevalues,movalues);
+    if(mag(MOL)>25)
+      MOL=MOL;
+    else if(neg(MOL) && MOL> -25)
+      MOL=-25;
+    else if(pos(MOL) && mag(MOL)<25)
+      MOL=25;
+    
+    scalar PBLH=interpolateXY(p_rgh_.time().value(),timevalues,pblhvalues);
+    scalar MBL=interpolateXY(p_rgh_.time().value(),timevalues,mblvalues);
+    const vector flowDir(u1/M,v1/M,0);
+    // Neutral
+    if(mag(MOL)>500)
+      {
+	vectorField::operator=(neutral(M,flowDir,MOL,PBLH,MBL)); 
+	fixedValueFvPatchVectorField::updateCoeffs();
+      }
+     else if(pos(MOL) && MOL<2.5 && M<=1.0)
+     {
+	vectorField::operator=(veryStable(M,flowDir,MOL,PBLH,MBL)); 
+	fixedValueFvPatchVectorField::updateCoeffs();
+	 }
+     else if(pos(MOL))
+    {
+	vectorField::operator=(stable(M,flowDir,MOL,PBLH,MBL)); 
+	fixedValueFvPatchVectorField::updateCoeffs();
+	 }
+	 else 
+    {
+	vectorField::operator=(unstable(M,flowDir,MOL,PBLH,MBL)); 
+	fixedValueFvPatchVectorField::updateCoeffs();
+	 }
+    }
+
+  tmp<vectorField> ABLMOWallUFvPatchVectorField::neutral(scalar M,vector flowDir,scalar MOL, scalar PBLH, scalar MBL) const
+  {
+    // Compute u* from Cell-Center
+    //scalarField z_=max(mag((patch().Cn()-patch().Cf()) mag((patch().Cn()-patch().Cf()) & patch().nf()) patch().nf()),0.25+0*z_)+z0_;
+    scalarField y_=mag((patch().Cn()-patch().Cf()) & patch().nf());
+    scalarField z_=max(y_,0.25+0*y_)+z0_;    
+    scalarField denominator=log(z_/z0_)+z_/MBL-z_/PBLH*0.5*z_/MBL;
+    vectorField UpParallel=this->patchInternalField() - (this->patchInternalField() & patch().nf())*patch().nf();
+    scalarField ustar=mag(UpParallel)*kappa_/denominator;
+    // Compute deltaU
+    scalarField deltaU=z_*ustar/kappa_*(1-z_/PBLH)*(1/z_+1/MBL+1/(PBLH-z_));
+    // Compute WindSpeed to ensure correct gradient 
+    return (UpParallel*(1.0-deltaU/(mag(UpParallel)+SMALL)));
+  }
+   tmp<vectorField> ABLMOWallUFvPatchVectorField::veryStable(scalar M,vector flowDir,scalar MOL, scalar PBLH, scalar MBL) const
+  {
+    // Compute u* from Cell-Center
+    //scalarField z_=max(mag((patch().Cn()-patch().Cf()) mag((patch().Cn()-patch().Cf()) & patch().nf()) patch().nf()),0.25+0*z_)+z0_;
+    scalarField y_=mag((patch().Cn()-patch().Cf()) & patch().nf());
+    scalarField z_=max(y_,0.25+0*y_)+z0_;    
+    scalarField denominator=6*log(z_/z0_)-5*z_/PBLH+z_/MBL-z_/PBLH*0.5*z_/MBL;
+    vectorField UpParallel=this->patchInternalField() - (this->patchInternalField() & patch().nf())*patch().nf();
+    scalarField ustar=mag(UpParallel)*kappa_/denominator;
+    // Compute deltaU
+    scalar qMin_=min(ustar);
+    scalar qMax_=max(ustar);
+    reduce(qMin_, minOp<scalar>());
+    reduce(qMax_, maxOp<scalar>());
+    scalar uavg=0.5*(qMin_+qMax_);
+    scalarField deltaU=z_*uavg/kappa_*(1-z_/PBLH)*(6/z_+1/MBL+1/(PBLH-z_));
+    // Compute WindSpeed to ensure correct gradient 
+    return (UpParallel*(1.0-deltaU/(mag(UpParallel)+SMALL)));
+  }
+  tmp<vectorField> ABLMOWallUFvPatchVectorField::stable(scalar M,vector flowDir,scalar MOL, scalar PBLH, scalar MBL) const
+  {
+    // Compute u* from Cell-Center
+    //scalarField z_=max(mag((patch().Cn()-patch().Cf()) mag((patch().Cn()-patch().Cf()) & patch().nf()) patch().nf()),0.25+0*z_)+z0_;
+    scalarField y_=mag((patch().Cn()-patch().Cf()) & patch().nf());
+    scalarField z_=max(y_,0.25+0*y_)+z0_;    
+    scalarField denominator=log(z_/z0_)+5*z_/MOL*(1-0.5*z_/PBLH)+z_/MBL-z_/PBLH*0.5*z_/MBL;
+    vectorField UpParallel=this->patchInternalField() - (this->patchInternalField() & patch().nf())*patch().nf();
+    scalarField ustar=mag(UpParallel)*kappa_/denominator;
+    // Compute deltaU
+    scalarField deltaU=z_*ustar/kappa_*(1-z_/PBLH)*((1+5*z_/MOL)/z_+1/MBL+1/(PBLH-z_));
+    // Compute WindSpeed to ensure correct gradient 
+    return (UpParallel*(1.0-deltaU/(mag(UpParallel)+SMALL)));
+  }
+  tmp<vectorField> ABLMOWallUFvPatchVectorField::unstable(scalar M,vector flowDir,scalar MOL, scalar PBLH, scalar MBL) const
+  {
+    // Compute u* from Cell-Center
+    //scalarField z_=max(mag((patch().Cn()-patch().Cf()) mag((patch().Cn()-patch().Cf()) & patch().nf()) patch().nf()),0.25+0*z_)+z0_;
+    scalarField y_=mag((patch().Cn()-patch().Cf()) & patch().nf());
+    scalarField z_=max(y_,0.25+0*y_)+z0_;    
+    scalarField xF=pow(1-12*z_/MOL,1.0/3.0);
+    scalarField psiMF=1.5*log((1+xF+sqr(xF))/3.0)+3.14/sqrt(3.0)-sqrt(3.0)*atan((1+2*xF)/sqrt(3.0));
+    scalar xF0=pow(1-12*z0_/MOL,1.0/3.0);
+    scalar psiMF0=1.5*log((1+xF0+sqr(xF0))/3.0)+3.14/sqrt(3.0)-sqrt(3.0)*atan((1+2*xF0)/sqrt(3.0));    
+    scalarField denominator=log(z_/z0_)-psiMF+psiMF0;//+z_/PBLH*(1+(pow(1-12*z_/MOL,1.0/3.0)-1)/(8*z_/MOL));
+    //    denominator=denominator+z_/MBL-z_/PBLH*0.5*z_/MBL;
+    vectorField UpParallel=this->patchInternalField() - (this->patchInternalField() & patch().nf())*patch().nf();
+    scalarField ustar=mag(UpParallel)*kappa_/denominator;
+    scalarField deltaU=ustar/kappa_*mag((patch().Cn()-patch().Cf()) & patch().nf())/z_*pow(1-12*z_/MOL,-1.0/3.0);    
+    // Compute deltaU
+    //    scalarField deltaU=z_*ustar/kappa_*(1-z_/PBLH)*(pow(1-12*z_/MOL,-1.0/3.0)/z_+1/MBL+1/(PBLH-z_));
+    //    scalarField deltaU=ustar/kappa_*5+0*z_)/z_*pow(1-12*z_/MOL,-1.0/3.0);
+    // Compute WindSpeed to ensure correct gradient 
+    return (UpParallel*(1.0-deltaU/(mag(UpParallel)+SMALL)));
+  }
+    void ABLMOWallUFvPatchVectorField::write(Ostream& os) const
+    {
+      fvPatchVectorField::write(os);
+      os.writeKeyword("kappa")<< kappa_ << token::END_STATEMENT << nl;
+      os.writeKeyword("z0")<< z0_ << token::END_STATEMENT << nl;
+      writeEntry("value", os);
+    }
+
+
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+    makePatchTypeField
+    (
+     fvPatchVectorField,
+     ABLMOWallUFvPatchVectorField
+     );
+
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+  }
+} // End namespace Foam
+
+// ************************************************************************* //

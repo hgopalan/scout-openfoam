@@ -1,0 +1,15 @@
+ABLInflow/ABLInflow.C
+ABLInflowU/ABLInflowUFvPatchVectorField.C
+ABLInflowK/ABLInflowKFvPatchScalarField.C
+ABLInflowEpsilon/ABLInflowEpsilonFvPatchScalarField.C
+ABLInflowOmega/ABLInflowOmegaFvPatchScalarField.C
+ABLInflowNut/ABLInflowNutFvPatchScalarField.C
+ABLWallU/ABLWallUFvPatchVectorField.C
+ABLWallK/ABLWallKFvPatchScalarField.C
+ABLWallEpsilon/ABLWallEpsilonFvPatchScalarField.C
+ABLWallOmega/ABLWallOmegaFvPatchScalarField.C
+ABLWallNut/ABLWallNutFvPatchScalarField.C
+timeVaryingHeatFlux/timeVaryingHeatFluxFvPatchScalarField.C
+surfaceEnergyBalance/surfaceEnergyBalanceFvPatchScalarField.C
+LewisSurfaceEnergyBalance/LewisSurfaceEnergyBalanceFvPatchScalarField.C
+LIB = $(FOAM_USER_LIBBIN)/libABLBC

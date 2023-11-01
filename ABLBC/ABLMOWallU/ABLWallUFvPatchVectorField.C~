@@ -1,0 +1,158 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+  \\    /   O peration     |
+  \\  /    A nd           | Copyright (C) 2011-2015 OpenFOAM Foundation
+  \\/     M anipulation  |
+  -------------------------------------------------------------------------------
+  License
+  This file is part of OpenFOAM.
+
+  OpenFOAM is free software: you can redistribute it and/or modify it
+  under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+  for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
+  \*---------------------------------------------------------------------------*/
+
+#include "ABLMOWallUFvPatchVectorField.H"
+#include "addToRunTimeSelectionTable.H"
+#include "fvPatchFieldMapper.H"
+#include "volFields.H"
+#include "surfaceFields.H"
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+namespace Foam
+{
+  namespace incompressible
+  {
+
+    // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
+
+    ABLMOWallUFvPatchVectorField::
+    ABLMOWallUFvPatchVectorField
+    (
+     const fvPatch& p,
+     const DimensionedField<vector, volMesh>& iF
+     )
+      :
+      fixedValueFvPatchVectorField(p, iF),
+      ABLInflow()
+    {}
+
+
+    ABLMOWallUFvPatchVectorField::
+    ABLMOWallUFvPatchVectorField
+    (
+     const fvPatch& p,
+     const DimensionedField<vector, volMesh>& iF,
+     const dictionary& dict
+     )
+      :
+      fixedValueFvPatchVectorField(p, iF),
+      ABLInflow(patch().Cn(), dict)
+    {
+      //  Info<<UWall(patch().Cn(),this->patchInternalField())<<endl;
+      //  Info<<"Here:"<<endl;
+      //  vectorField::operator=(UWall(patch().Cn(),this->patchInternalField(),mag((patch().Cn()-patch().Cf()) & patch().nf()),(patch().Cn()-patch().Cf()) & patch().nf()));
+      scalarField nhat_=mag((patch().Cn()-patch().Cf()) & patch().nf());
+      scalarField Fm_=1.0+0*nhat_;
+      vectorField::operator=(UWall(patch().Cn(),this->patchInternalField(),nhat_,patch().nf(),Fm_));
+
+    }
+
+
+    ABLMOWallUFvPatchVectorField::
+    ABLMOWallUFvPatchVectorField
+    (
+     const ABLMOWallUFvPatchVectorField& pvf,
+     const fvPatch& p,
+     const DimensionedField<vector, volMesh>& iF,
+     const fvPatchFieldMapper& mapper
+     )
+      :
+      fixedValueFvPatchVectorField(pvf, p, iF, mapper),
+      ABLInflow(pvf, mapper)
+    {}
+
+
+    ABLMOWallUFvPatchVectorField::
+    ABLMOWallUFvPatchVectorField
+    (
+     const ABLMOWallUFvPatchVectorField& pvf,
+     const DimensionedField<vector, volMesh>& iF
+     )
+      :
+      fixedValueFvPatchVectorField(pvf, iF),
+      ABLInflow(pvf)
+    {}
+
+
+    // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+
+    void ABLMOWallUFvPatchVectorField::autoMap
+    (
+     const fvPatchFieldMapper& m
+     )
+    {
+      fixedValueFvPatchVectorField::autoMap(m);
+      ABLInflow::autoMap(m);
+    }
+
+
+    void ABLMOWallUFvPatchVectorField::rmap
+    (
+     const fvPatchVectorField& pvf,
+     const labelList& addr
+     )
+    {
+      fixedValueFvPatchVectorField::rmap(pvf, addr);
+
+      const ABLMOWallUFvPatchVectorField& blpvf =
+        refCast<const ABLMOWallUFvPatchVectorField>(pvf);
+
+      ABLInflow::rmap(blpvf, addr);
+    }
+    void ABLMOWallUFvPatchVectorField::updateCoeffs()
+    {
+      if (this->updated())
+	{
+	  return;
+	}
+      const fvPatch& patch=patch();
+#include "../stabilityFunction.H"    
+      vectorField::operator=(UWall(patch.Cn(),this->patchInternalField(),nhat_,patch.nf(),Fm_));
+      fixedValueFvPatchVectorField::updateCoeffs();
+    }
+
+    void ABLMOWallUFvPatchVectorField::write(Ostream& os) const
+    {
+      fvPatchVectorField::write(os);
+      ABLInflow::write(os);
+      writeEntry("value", os);
+    }
+
+
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+    makePatchTypeField
+    (
+     fvPatchVectorField,
+     ABLMOWallUFvPatchVectorField
+     );
+
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+  }
+} // End namespace Foam
+
+// ************************************************************************* //

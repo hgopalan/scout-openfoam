@@ -1,0 +1,341 @@
+/*---------------------------------------------------------------------------* \
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+  \\    /   O peration     |
+  \\  /    A nd           | Copyright (C) 2011-2013 OpenFOAM Foundation
+  \\/     M anipulation  |
+  -------------------------------------------------------------------------------
+  License
+  This file is part of OpenFOAM.
+
+  OpenFOAM is free software: you can redistribute it and/or modify it
+  under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+  for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
+  \*---------------------------------------------------------------------------*/
+
+#include "ABLLouisWallQvFvPatchScalarField.H"
+#include "fvPatchFieldMapper.H"
+#include "volFields.H"
+#include "surfaceFields.H"
+#include "addToRunTimeSelectionTable.H"
+#include "interpolateXY.H"
+#include "scalarIOList.H"
+#include "boundaryRadiationProperties.H"
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+namespace Foam
+{
+
+
+ 
+
+  // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
+
+  ABLLouisWallQvFvPatchScalarField::
+  ABLLouisWallQvFvPatchScalarField
+  (
+   const fvPatch& p,
+   const DimensionedField<scalar, volMesh>& iF
+   )
+    :
+    fixedValueFvPatchScalarField(p, iF),
+    z0_(0.1),
+    mavail_(0.1)
+  {}
+
+
+  ABLLouisWallQvFvPatchScalarField::
+  ABLLouisWallQvFvPatchScalarField
+  (
+   const ABLLouisWallQvFvPatchScalarField& ptf,
+   const fvPatch& p,
+   const DimensionedField<scalar, volMesh>& iF,
+   const fvPatchFieldMapper& mapper
+   )
+    :
+    fixedValueFvPatchScalarField(ptf, p, iF, mapper),
+    z0_(ptf.z0_),
+    mavail_(ptf.mavail_),
+    sensibleHeat_()
+  {
+    sensibleHeat_.setSize(mapper.size());
+    sensibleHeat_.map(ptf.sensibleHeat_,mapper);
+  }
+  ABLLouisWallQvFvPatchScalarField::
+  ABLLouisWallQvFvPatchScalarField
+  (
+   const fvPatch& p,
+   const DimensionedField<scalar, volMesh>& iF,
+   const dictionary& dict
+   )
+    :
+    fixedValueFvPatchScalarField(p, iF),
+    z0_(dict.lookupOrDefault<scalar>("z0",0.1)),
+    mavail_(dict.lookupOrDefault<scalar>("mavail",0.1))
+  {
+    if (dict.found("value"))
+      {
+	fvPatchField<scalar>::operator=
+	  (
+	   scalarField("value", dict, p.size())
+	   );
+	
+      }
+    else
+      {
+        fvPatchField<scalar>::operator=(patchInternalField());
+	//	fvPatchField<scalar>::operator=(this->patchInternalField());
+	//	updateCoeffs();
+      }
+    if(dict.found("sensibleHeat"))
+      {
+	sensibleHeat_=scalarField("sensibleHeat",dict,p.size());
+      }
+  }
+
+
+  ABLLouisWallQvFvPatchScalarField::
+  ABLLouisWallQvFvPatchScalarField
+  (
+   const ABLLouisWallQvFvPatchScalarField& rwfpsf
+   )
+    :
+    fixedValueFvPatchScalarField(rwfpsf),
+    z0_(rwfpsf.z0_),
+    mavail_(rwfpsf.mavail_),
+    sensibleHeat_(rwfpsf.sensibleHeat_)
+  {}
+
+
+
+  ABLLouisWallQvFvPatchScalarField::
+  ABLLouisWallQvFvPatchScalarField
+  (
+   const ABLLouisWallQvFvPatchScalarField& rwfpsf,
+   const DimensionedField<scalar, volMesh>& iF
+   )
+    :
+    fixedValueFvPatchScalarField(rwfpsf, iF),
+    z0_(rwfpsf.z0_),
+    mavail_(rwfpsf.mavail_),
+    sensibleHeat_(rwfpsf.sensibleHeat_)
+
+  {}
+
+
+  // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+
+  void ABLLouisWallQvFvPatchScalarField::autoMap
+  (
+   const fvPatchFieldMapper& m
+   )
+  {
+    fixedValueFvPatchScalarField::autoMap(m);
+    sensibleHeat_.autoMap(m);    
+  }
+
+
+  void ABLLouisWallQvFvPatchScalarField::rmap
+  (
+   const fvPatchScalarField& ptf,
+   const labelList& addr
+   )
+  {
+    fixedValueFvPatchScalarField::rmap(ptf, addr);
+    const ABLLouisWallQvFvPatchScalarField& ewhftpsf =
+      refCast<const ABLLouisWallQvFvPatchScalarField>(ptf);
+    sensibleHeat_.rmap(ewhftpsf.sensibleHeat_, addr);    
+    return;
+  }
+
+  // * * * * * * * * * * * * Protected Member Functions  * * * * * * * * * * * //
+
+  void ABLLouisWallQvFvPatchScalarField::updateCoeffs() 
+  { 
+    if (this->updated())
+      {
+	return;
+      }
+    // Initial Start up 
+    // Read the driving variables from the solver
+    //if(this->patch().name()=="lower" || this->patch().name()=="bufferstl")
+    //{
+    const scalarIOList& Tvalues=this->db().lookupObject<scalarIOList>("timeProfile");
+    const scalarIOList& MOvalues=this->db().lookupObject<scalarIOList>("MOProfile");
+    const scalarIOList& PBLHvalues=this->db().lookupObject<scalarIOList>("PBLHProfile");
+    scalarField timevalues(Tvalues.size(),0.0);
+    scalarField trefvalues(Tvalues.size(),0.0);
+    scalarField movalues(Tvalues.size(),0.0);
+    scalarField pblhvalues(Tvalues.size(),0.0);
+    forAll(Tvalues,i)
+      {
+	timevalues[i] = Tvalues[i];
+	movalues[i] = MOvalues[i];
+	pblhvalues[i] = PBLHvalues[i];
+      }
+    const fvPatch& patch=this->patch();
+    const label patchi = patch.index();     
+    const volVectorField& U=this->db().lookupObject<volVectorField>("U");
+    const vectorField  Uc = U.boundaryField()[patchi].patchInternalField();
+    scalar kappa_=0.41;
+    scalar MOL=interpolateXY(U.time().value(),timevalues,movalues);
+    if(mag(MOL)>25)
+      MOL=MOL;
+    else if(neg(MOL) && MOL> -25)
+      MOL=-25;
+    else if(pos(MOL) && mag(MOL)<25)
+      MOL=25;
+    scalar PBLH=interpolateXY(U.time().value(),timevalues,pblhvalues);
+    PBLH=1000;
+    // Adjust wall distance 
+    vectorField normalV_=patch.nf();
+    scalarField y_=mag((patch.Cn()-patch.Cf()) & patch.nf());
+    scalarField nhat_=max(y_,0.01+0*y_)+z0_;  //Avoid thin gap blow up 
+    // Extract the parallel velocity 
+    vectorField UpParallel=Uc - (Uc & normalV_)*normalV_;
+    volScalarField TTemp=this->db().lookupObject<volScalarField>("T");
+    scalarField TCell=TTemp.boundaryField()[patchi].patchInternalField();
+    // convective velocity wstar from values at last step for unstable boundary layer 
+    sensibleHeat_=min(sensibleHeat_,0*sensibleHeat_);
+    scalarField wstar=pow(-9.81/TCell*PBLH*neg(MOL)*sensibleHeat_,0.33);
+    // Louis Formula for sensible heat flux
+    scalarField Tw_=patch.lookupPatchField<volScalarField, scalar>("T");
+    scalarField deltaTheta=TCell-Tw_;
+    scalarField louisA=kappa_/log((nhat_+z0_)/z0_);  
+    scalar Cstar=7.4;
+    scalarField magUp=mag(UpParallel);
+    magUp=max(magUp,0.1+0*magUp);
+    scalarField z01_=z0_+0*magUp;
+    scalarField ustar=louisA*magUp*sqrt(louisF(deltaTheta,TCell,magUp,nhat_,MOL,Cstar,z01_)); 
+    Cstar=5.3;
+    scalar Czil_=pow(10,-kappa_*z0_/0.07);
+    scalar nu=1e-5;
+    scalarField zt_=z0_*exp(-kappa_*Czil_*sqrt(ustar*z0_/nu));
+    louisA=kappa_/log((nhat_+zt_)/zt_); 
+    const volScalarField qvTemp=this->db().lookupObject<volScalarField>("qv");
+    const scalarField qVCell=qvTemp.boundaryField()[patchi].patchInternalField();
+    scalar ka=2.4e-5;
+    scalarField faceesat=610.94*exp(17.625*(Tw_-273.15)/(Tw_-30.11));
+    scalarField qvFace=(0.622 *faceesat/(101325-0.378*faceesat));
+    //scalarField den=log(kappa_*max(ustar,wstar)*nhat_/ka+nhat_/0.01);
+    const volScalarField tree=this->db().lookupObject<volScalarField>("treeBlanking");
+    const scalarField treeCell=tree.boundaryField()[patchi].patchInternalField();
+    scalarField den=log(kappa_*ustar*nhat_/ka+nhat_/0.01);
+    //scalarField den=log(kappa_*sqrt(pow(ustar,2)+pow(wstar,2))*nhat_/ka+nhat_/0.01);
+    scalarField qstar=(pos(treeCell)*0.5+neg(treeCell)*mavail_)*kappa_*(qVCell-qvFace)/den;
+    scalarField ustarThetaStar=louisA/0.7*deltaTheta*sqrt(louisF(deltaTheta,TCell,magUp,nhat_,MOL,Cstar,zt_))*sqrt(pow(ustar,2)+pow(wstar,2));
+    sensibleHeat_=(1+0.61*qVCell)*ustarThetaStar+0.61*TCell*ustar*qstar;
+    scalar louisCstar=7.4;
+    scalarField Fm=louisF(deltaTheta,TCell,magUp,nhat_,MOL,louisCstar,z01_);
+    louisCstar=5.3;
+    scalarField Fh=louisF(deltaTheta,TCell,magUp,nhat_,MOL,louisCstar,zt_)+SMALL;
+    scalarField louisMOL=TCell/(kappa_*9.81)*ustar*magUp/(deltaTheta+SMALL)*Fm/Fh*0.7;
+    forAll(louisMOL,faceI)
+      {
+	if(mag(louisMOL[faceI]<5.0))
+	  {
+	    louisMOL[faceI]=MOL;
+	  }
+      }
+    scalarField faceqV=qVLouisWall(this->patchInternalField(),nhat_,this->patch().nf(),qstar,louisMOL);
+    if(mavail_>0.9)
+      faceqV=qvFace;
+    scalarField::operator=(faceqV);
+    fixedValueFvPatchScalarField::updateCoeffs();
+    // }
+    /*const fvPatch& patch=this->patch();
+      const label patchi = patch.index();
+      const volScalarField qvTemp=this->db().lookupObject<volScalarField>("qv");
+      const scalarField qVCell=qvTemp.boundaryField()[patchi].patchInternalField();
+      const volScalarField TTemp=this->db().lookupObject<volScalarField>("T");
+      const scalarField TCell=qvTemp.boundaryField()[patchi].patchInternalField();
+      scalarField Tw_=this->patch().lookupPatchField<volScalarField, scalar>("T");
+      scalarField faceesat=610.94*exp(17.625*(Tw_-273.15)/(Tw_-30.11));
+      scalarField qvFace=(0.622 *faceesat/(101325-0.378*faceesat));
+      scalarField cellesat=610.94*exp(17.625*(TCell-273.15)/(TCell-30.11));
+      scalarField qvCellSat=(0.622 *cellesat/(101325-0.378*cellesat));
+      scalarField alpha=qVCell/qvCellSat;
+      alpha=min(1+0*alpha,alpha);
+      scalarField::operator=(qvFace*alpha);
+      fixedValueFvPatchScalarField::updateCoeffs();*/
+  }
+
+  tmp<scalarField> ABLLouisWallQvFvPatchScalarField::qVLouisWall(const scalarField& qVCell,const scalarField& nhat_,const vectorField& nhatV_,scalarField& ustar,scalarField& MOL_) const
+  {
+    scalar kappa_=0.41;
+    scalarField deltaU=ustar/kappa_*nhat_/(nhat_+z0_)*phiM(nhat_,MOL_);
+    //minMax("qV:",qVCell*(1.0-deltaU/qVCell));
+    return (qVCell*(1.0-deltaU/qVCell));
+  }   
+
+  tmp<scalarField> ABLLouisWallQvFvPatchScalarField::phiM(const scalarField &p,scalarField& MOL_) const 
+  {
+    //      return (pos(MOL_)*(1+ 5.0*p/MOL_)+neg(MOL_)*(pow(1- neg(MOL_)*16*p/MOL_,-0.25)));
+    return (pos(MOL_)*(1+ 5.0*p/MOL_)+neg(MOL_)*(pow(1- neg(MOL_)*12*pos(p)*p/MOL_,-1.0/3.0)));
+
+  }
+      
+  tmp<scalarField> ABLLouisWallQvFvPatchScalarField::louisF(scalarField& deltaTheta,scalarField& Tcell,scalarField& Uc,const scalarField& nhat_,scalar& MOL, scalar& louisCstar,scalarField& zt_) const
+  {
+    // Replace zt_ with zt_
+    // Unstable
+    scalarField Rib=9.81*nhat_*deltaTheta/(Tcell*sqr(Uc)+SMALL);
+    Rib=max(Rib,-10+0*Rib);
+    scalar louisB=9.4;
+    scalar kappa_=0.41;
+    scalarField louisC=louisCstar*louisB*sqr(kappa_/log((nhat_+zt_)/zt_))*sqrt(nhat_/zt_);
+    scalar louisBstar=4.7;
+    return neg(Rib)*(1-louisB*Rib/(1+louisC*sqrt(mag(Rib))))+pos(Rib)/sqr(1+louisBstar*Rib);
+  }
+
+  
+  void ABLLouisWallQvFvPatchScalarField::minMax(word variableName,scalarField& field) const
+  {
+    scalar qMin_=min(field);                                                                                        
+    scalar qMax_=max(field);
+    reduce(qMin_, minOp<scalar>());     
+    reduce(qMax_, maxOp<scalar>());
+    Info<<this->patch().name()<<" "<<variableName<<":[ "<<qMin_<<"  "<<qMax_<<" ]"<<endl;       
+  }
+  void ABLLouisWallQvFvPatchScalarField::minMax(word variableName,const scalarField& field) const
+  {
+    scalar qMin_=min(field);
+    scalar qMax_=max(field);
+    reduce(qMin_, minOp<scalar>());
+    reduce(qMax_, maxOp<scalar>());                                                                 
+    Info<<this->patch().name()<<" "<<variableName<<":[ "<<qMin_<<"  "<<qMax_<<" ]"<<endl;       
+  }
+
+  void ABLLouisWallQvFvPatchScalarField::write(Ostream& os) const
+  {
+    fixedValueFvPatchScalarField::write(os);
+    os.writeKeyword("z0")<< z0_ << token::END_STATEMENT << nl;
+    os.writeKeyword("mavail")<< mavail_ << token::END_STATEMENT << nl;
+    sensibleHeat_.writeEntry("sensibleHeat",os);
+    //    writeEntry("value", os);
+  }
+  // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+  makePatchTypeField
+  (
+   fvPatchScalarField,
+   ABLLouisWallQvFvPatchScalarField
+   );
+
+  // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+} // End namespace Foam
+
+  // ************************************************************************* //
