@@ -8,4 +8,5 @@ Urban microclimate solver in OpenFOAM with some engineering hacks:
 6. Air-con, heat sources and water sprinkling can be included as source terms on wall boundary conditions. 
 7. One-equation Wray-Agarwal model for all stratifications and ASL/ABL support. Homogenity is ensured for fetch > 50 km within 0,1 m/s.
 8. Thermal comfort and WBGT outputs.
-9. Converges for very low wind speeds < 0.2 m/s and clear-sky radiation. 
+9. Converges for very low wind speeds < 0.2 m/s and clear-sky radiation.
+10. Run UHI simulations by converting netCDF output to the Openfoam compatible dictonary files. 
