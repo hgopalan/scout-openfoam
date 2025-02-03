@@ -1,0 +1,1970 @@
+/*--------------------------------*- C++ -*----------------------------------*\ 
+| =========                 |                                                 |
+| \      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \    /   O peration     | Version:  v1812                                |
+|   \  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+version     2.0;
+format      ascii;
+class       dictionary;
+object     sampleDict;
+}
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * // 
+
+type surfaces;
+libs ("libsampling.so");
+surfaceFormat vtk;
+fields (U T Tmrt relHum PMV treeBlanking qcb WBGT) ;
+interpolationScheme cellPoint;
+surfaces
+(
+	 NJC_Aesthetic
+	 {
+		 type sampledTriSurfaceMesh;
+		 surface NJC_Aesthetic.stl;
+		 source cells;
+		 interpolate true;
+	}
+	 NJC_Main
+	 {
+		 type sampledTriSurfaceMesh;
+		 surface NJC_Main.stl;
+		 source cells;
+		 interpolate true;
+	}
+	 NJC_TD_Block
+	 {
+		 type sampledTriSurfaceMesh;
+		 surface NJC_TD_Block.stl;
+		 source cells;
+		 interpolate true;
+	}
+	 NJC_Weights_Room
+	 {
+		 type sampledTriSurfaceMesh;
+		 surface NJC_Weights_Room.stl;
+		 source cells;
+		 interpolate true;
+	}
+	 lower
+	 {
+		 type patch;
+		 patches ("lower");
+		 interpolate     true;
+	}
+	 contour_xy_1
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 1);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 -3.0) (885.0 818.0 5.0);
+	 }
+	 contour_xy_2
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 2);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 -2.0) (885.0 818.0 6.0);
+	 }
+	 contour_xy_3
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 3);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 -1.0) (885.0 818.0 7.0);
+	 }
+	 contour_xy_4
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 4);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 0.0) (885.0 818.0 8.0);
+	 }
+	 contour_xy_5
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 5);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 1.0) (885.0 818.0 9.0);
+	 }
+	 contour_xy_6
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 6);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 2.0) (885.0 818.0 10.0);
+	 }
+	 contour_xy_7
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 7);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 3.0) (885.0 818.0 11.0);
+	 }
+	 contour_xy_8
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 8);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 4.0) (885.0 818.0 12.0);
+	 }
+	 contour_xy_9
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 9);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 5.0) (885.0 818.0 13.0);
+	 }
+	 contour_xy_10
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 10);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 6.0) (885.0 818.0 14.0);
+	 }
+	 contour_xy_11
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 11);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 7.0) (885.0 818.0 15.0);
+	 }
+	 contour_xy_12
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 12);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 8.0) (885.0 818.0 16.0);
+	 }
+	 contour_xy_13
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 13);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 9.0) (885.0 818.0 17.0);
+	 }
+	 contour_xy_14
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 14);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 10.0) (885.0 818.0 18.0);
+	 }
+	 contour_xy_15
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 15);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 11.0) (885.0 818.0 19.0);
+	 }
+	 contour_xy_16
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 16);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 12.0) (885.0 818.0 20.0);
+	 }
+	 contour_xy_17
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 17);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 13.0) (885.0 818.0 21.0);
+	 }
+	 contour_xy_18
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 18);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 14.0) (885.0 818.0 22.0);
+	 }
+	 contour_xy_19
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 19);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 15.0) (885.0 818.0 23.0);
+	 }
+	 contour_xy_20
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 20);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 16.0) (885.0 818.0 24.0);
+	 }
+	 contour_xy_21
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 21);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 17.0) (885.0 818.0 25.0);
+	 }
+	 contour_xy_22
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 22);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 18.0) (885.0 818.0 26.0);
+	 }
+	 contour_xy_23
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 23);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 19.0) (885.0 818.0 27.0);
+	 }
+	 contour_xy_24
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 24);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 20.0) (885.0 818.0 28.0);
+	 }
+	 contour_xy_25
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 25);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 21.0) (885.0 818.0 29.0);
+	 }
+	 contour_xy_26
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 26);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 22.0) (885.0 818.0 30.0);
+	 }
+	 contour_xy_27
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 27);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 23.0) (885.0 818.0 31.0);
+	 }
+	 contour_xy_28
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 28);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 24.0) (885.0 818.0 32.0);
+	 }
+	 contour_xy_29
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 29);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 25.0) (885.0 818.0 33.0);
+	 }
+	 contour_xy_30
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 30);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 26.0) (885.0 818.0 34.0);
+	 }
+	 contour_xy_31
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 31);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 27.0) (885.0 818.0 35.0);
+	 }
+	 contour_xy_32
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 32);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 28.0) (885.0 818.0 36.0);
+	 }
+	 contour_xy_33
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 33);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 29.0) (885.0 818.0 37.0);
+	 }
+	 contour_xy_34
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 34);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 30.0) (885.0 818.0 38.0);
+	 }
+	 contour_xy_35
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 35);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 31.0) (885.0 818.0 39.0);
+	 }
+	 contour_xy_36
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 36);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 32.0) (885.0 818.0 40.0);
+	 }
+	 contour_xy_37
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 37);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 33.0) (885.0 818.0 41.0);
+	 }
+	 contour_xy_38
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 38);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 34.0) (885.0 818.0 42.0);
+	 }
+	 contour_xy_39
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 39);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 35.0) (885.0 818.0 43.0);
+	 }
+	 contour_xy_40
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 40);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 36.0) (885.0 818.0 44.0);
+	 }
+	 contour_xy_41
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 41);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 37.0) (885.0 818.0 45.0);
+	 }
+	 contour_xy_42
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 42);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 38.0) (885.0 818.0 46.0);
+	 }
+	 contour_xy_43
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 43);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 39.0) (885.0 818.0 47.0);
+	 }
+	 contour_xy_44
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 44);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 40.0) (885.0 818.0 48.0);
+	 }
+	 contour_xy_45
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 45);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 41.0) (885.0 818.0 49.0);
+	 }
+	 contour_xy_46
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 46);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 42.0) (885.0 818.0 50.0);
+	 }
+	 contour_xy_47
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 47);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 43.0) (885.0 818.0 51.0);
+	 }
+	 contour_xy_48
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 48);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 44.0) (885.0 818.0 52.0);
+	 }
+	 contour_xy_49
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (0 0 49);
+			normal  (0 0 1);
+		}
+		 interpolate     true;
+		 triangulate true;
+		 mergeTol 1e-8;
+		bounds  (-341.0369873046875 29.0 45.0) (885.0 818.0 53.0);
+	 }
+	 contour_yz_0
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (-371 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (-375.6879119873047 9.274999999999977 0) (-367.6879119873047 837.725 100.0);
+	 }
+	 contour_yz_0.02
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (-345 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (-349.9411352539062 9.274999999999977 0) (-341.9411352539062 837.725 100.0);
+	 }
+	 contour_yz_0.04
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (-320 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (-324.19435852050776 9.274999999999977 0) (-316.19435852050776 837.725 100.0);
+	 }
+	 contour_yz_0.06
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (-294 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (-298.4475817871093 9.274999999999977 0) (-290.4475817871093 837.725 100.0);
+	 }
+	 contour_yz_0.08
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (-268 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (-272.70080505371084 9.274999999999977 0) (-264.70080505371084 837.725 100.0);
+	 }
+	 contour_yz_0.1
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (-242 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (-246.9540283203124 9.274999999999977 0) (-238.9540283203124 837.725 100.0);
+	 }
+	 contour_yz_0.12
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (-217 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (-221.20725158691397 9.274999999999977 0) (-213.20725158691397 837.725 100.0);
+	 }
+	 contour_yz_0.14
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (-191 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (-195.46047485351554 9.274999999999977 0) (-187.46047485351554 837.725 100.0);
+	 }
+	 contour_yz_0.16
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (-165 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (-169.7136981201171 9.274999999999977 0) (-161.7136981201171 837.725 100.0);
+	 }
+	 contour_yz_0.18
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (-139 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (-143.96692138671867 9.274999999999977 0) (-135.96692138671867 837.725 100.0);
+	 }
+	 contour_yz_0.2
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (-114 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (-118.22014465332023 9.274999999999977 0) (-110.22014465332023 837.725 100.0);
+	 }
+	 contour_yz_0.22
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (-88 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (-92.4733679199218 9.274999999999977 0) (-84.4733679199218 837.725 100.0);
+	 }
+	 contour_yz_0.24
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (-62 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (-66.72659118652336 9.274999999999977 0) (-58.726591186523365 837.725 100.0);
+	 }
+	 contour_yz_0.26
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (-36 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (-40.97981445312493 9.274999999999977 0) (-32.97981445312493 837.725 100.0);
+	 }
+	 contour_yz_0.28
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (-11 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (-15.233037719726493 9.274999999999977 0) (-7.233037719726493 837.725 100.0);
+	 }
+	 contour_yz_0.3
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (14 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (10.513739013671945 9.274999999999977 0) (18.513739013671945 837.725 100.0);
+	 }
+	 contour_yz_0.32
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (40 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (36.260515747070386 9.274999999999977 0) (44.260515747070386 837.725 100.0);
+	 }
+	 contour_yz_0.34
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (66 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (62.00729248046882 9.274999999999977 0) (70.00729248046882 837.725 100.0);
+	 }
+	 contour_yz_0.36
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (91 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (87.75406921386725 9.274999999999977 0) (95.75406921386725 837.725 100.0);
+	 }
+	 contour_yz_0.38
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (117 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (113.50084594726569 9.274999999999977 0) (121.50084594726569 837.725 100.0);
+	 }
+	 contour_yz_0.4
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (143 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (139.24762268066414 9.274999999999977 0) (147.24762268066414 837.725 100.0);
+	 }
+	 contour_yz_0.42
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (168 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (164.99439941406257 9.274999999999977 0) (172.99439941406257 837.725 100.0);
+	 }
+	 contour_yz_0.44
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (194 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (190.741176147461 9.274999999999977 0) (198.741176147461 837.725 100.0);
+	 }
+	 contour_yz_0.46
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (220 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (216.48795288085944 9.274999999999977 0) (224.48795288085944 837.725 100.0);
+	 }
+	 contour_yz_0.48
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (246 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (242.23472961425787 9.274999999999977 0) (250.23472961425787 837.725 100.0);
+	 }
+	 contour_yz_0.5
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (271 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (267.9815063476563 9.274999999999977 0) (275.9815063476563 837.725 100.0);
+	 }
+	 contour_yz_0.52
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (297 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (293.72828308105477 9.274999999999977 0) (301.72828308105477 837.725 100.0);
+	 }
+	 contour_yz_0.54
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (323 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (319.47505981445323 9.274999999999977 0) (327.47505981445323 837.725 100.0);
+	 }
+	 contour_yz_0.56
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (349 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (345.2218365478517 9.274999999999977 0) (353.2218365478517 837.725 100.0);
+	 }
+	 contour_yz_0.58
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (374 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (370.96861328125016 9.274999999999977 0) (378.96861328125016 837.725 100.0);
+	 }
+	 contour_yz_0.6
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (400 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (396.7153900146486 9.274999999999977 0) (404.7153900146486 837.725 100.0);
+	 }
+	 contour_yz_0.62
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (426 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (422.4621667480471 9.274999999999977 0) (430.4621667480471 837.725 100.0);
+	 }
+	 contour_yz_0.64
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (452 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (448.20894348144554 9.274999999999977 0) (456.20894348144554 837.725 100.0);
+	 }
+	 contour_yz_0.66
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (477 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (473.955720214844 9.274999999999977 0) (481.955720214844 837.725 100.0);
+	 }
+	 contour_yz_0.68
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (503 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (499.70249694824247 9.274999999999977 0) (507.70249694824247 837.725 100.0);
+	 }
+	 contour_yz_0.7
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (529 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (525.4492736816409 9.274999999999977 0) (533.4492736816409 837.725 100.0);
+	 }
+	 contour_yz_0.72
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (555 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (551.1960504150393 9.274999999999977 0) (559.1960504150393 837.725 100.0);
+	 }
+	 contour_yz_0.74
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (580 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (576.9428271484377 9.274999999999977 0) (584.9428271484377 837.725 100.0);
+	 }
+	 contour_yz_0.76
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (606 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (602.6896038818361 9.274999999999977 0) (610.6896038818361 837.725 100.0);
+	 }
+	 contour_yz_0.78
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (632 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (628.4363806152345 9.274999999999977 0) (636.4363806152345 837.725 100.0);
+	 }
+	 contour_yz_0.8
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (658 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (654.1831573486329 9.274999999999977 0) (662.1831573486329 837.725 100.0);
+	 }
+	 contour_yz_0.82
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (683 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (679.9299340820313 9.274999999999977 0) (687.9299340820313 837.725 100.0);
+	 }
+	 contour_yz_0.84
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (709 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (705.6767108154297 9.274999999999977 0) (713.6767108154297 837.725 100.0);
+	 }
+	 contour_yz_0.86
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (735 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (731.4234875488281 9.274999999999977 0) (739.4234875488281 837.725 100.0);
+	 }
+	 contour_yz_0.88
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (761 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (757.1702642822265 9.274999999999977 0) (765.1702642822265 837.725 100.0);
+	 }
+	 contour_yz_0.9
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (786 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (782.9170410156249 9.274999999999977 0) (790.9170410156249 837.725 100.0);
+	 }
+	 contour_yz_0.92
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (812 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (808.6638177490233 9.274999999999977 0) (816.6638177490233 837.725 100.0);
+	 }
+	 contour_yz_0.94
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (838 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (834.4105944824217 9.274999999999977 0) (842.4105944824217 837.725 100.0);
+	 }
+	 contour_yz_0.96
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (864 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (860.1573712158201 9.274999999999977 0) (868.1573712158201 837.725 100.0);
+	 }
+	 contour_yz_0.98
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (889 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (885.9041479492186 9.274999999999977 0) (893.9041479492186 837.725 100.0);
+	 }
+	 contour_yz_1
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point   (915 0 0);
+			normal  (1 0 0);
+		}
+		 interpolate     true;
+bounds  (911.650924682617 9.274999999999977 0) (919.650924682617 837.725 100.0);
+	 }
+	 contour_xz_0
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 9 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 5.274999999999977 0) (915.6509246826172 13.274999999999977 100.0);
+	 }
+	 contour_xz_0.02
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 25 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 21.84399999999998 0) (915.6509246826172 29.84399999999998 100.0);
+	 }
+	 contour_xz_0.04
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 42 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 38.41299999999998 0) (915.6509246826172 46.41299999999998 100.0);
+	 }
+	 contour_xz_0.06
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 58 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 54.981999999999985 0) (915.6509246826172 62.981999999999985 100.0);
+	 }
+	 contour_xz_0.08
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 75 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 71.55099999999999 0) (915.6509246826172 79.55099999999999 100.0);
+	 }
+	 contour_xz_0.1
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 92 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 88.11999999999999 0) (915.6509246826172 96.11999999999999 100.0);
+	 }
+	 contour_xz_0.12
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 108 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 104.689 0) (915.6509246826172 112.689 100.0);
+	 }
+	 contour_xz_0.14
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 125 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 121.258 0) (915.6509246826172 129.25799999999998 100.0);
+	 }
+	 contour_xz_0.16
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 141 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 137.827 0) (915.6509246826172 145.827 100.0);
+	 }
+	 contour_xz_0.18
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 158 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 154.39600000000002 0) (915.6509246826172 162.39600000000002 100.0);
+	 }
+	 contour_xz_0.2
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 174 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 170.96500000000003 0) (915.6509246826172 178.96500000000003 100.0);
+	 }
+	 contour_xz_0.22
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 191 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 187.53400000000005 0) (915.6509246826172 195.53400000000005 100.0);
+	 }
+	 contour_xz_0.24
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 208 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 204.10300000000007 0) (915.6509246826172 212.10300000000007 100.0);
+	 }
+	 contour_xz_0.26
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 224 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 220.67200000000008 0) (915.6509246826172 228.67200000000008 100.0);
+	 }
+	 contour_xz_0.28
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 241 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 237.2410000000001 0) (915.6509246826172 245.2410000000001 100.0);
+	 }
+	 contour_xz_0.3
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 257 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 253.81000000000012 0) (915.6509246826172 261.8100000000001 100.0);
+	 }
+	 contour_xz_0.32
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 274 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 270.37900000000013 0) (915.6509246826172 278.37900000000013 100.0);
+	 }
+	 contour_xz_0.34
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 290 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 286.94800000000015 0) (915.6509246826172 294.94800000000015 100.0);
+	 }
+	 contour_xz_0.36
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 307 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 303.51700000000017 0) (915.6509246826172 311.51700000000017 100.0);
+	 }
+	 contour_xz_0.38
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 324 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 320.0860000000002 0) (915.6509246826172 328.0860000000002 100.0);
+	 }
+	 contour_xz_0.4
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 340 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 336.6550000000002 0) (915.6509246826172 344.6550000000002 100.0);
+	 }
+	 contour_xz_0.42
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 357 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 353.2240000000002 0) (915.6509246826172 361.2240000000002 100.0);
+	 }
+	 contour_xz_0.44
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 373 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 369.79300000000023 0) (915.6509246826172 377.79300000000023 100.0);
+	 }
+	 contour_xz_0.46
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 390 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 386.36200000000025 0) (915.6509246826172 394.36200000000025 100.0);
+	 }
+	 contour_xz_0.48
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 406 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 402.93100000000027 0) (915.6509246826172 410.93100000000027 100.0);
+	 }
+	 contour_xz_0.5
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 423 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 419.5000000000003 0) (915.6509246826172 427.5000000000003 100.0);
+	 }
+	 contour_xz_0.52
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 440 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 436.0690000000003 0) (915.6509246826172 444.0690000000003 100.0);
+	 }
+	 contour_xz_0.54
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 456 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 452.6380000000003 0) (915.6509246826172 460.6380000000003 100.0);
+	 }
+	 contour_xz_0.56
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 473 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 469.20700000000033 0) (915.6509246826172 477.20700000000033 100.0);
+	 }
+	 contour_xz_0.58
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 489 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 485.77600000000035 0) (915.6509246826172 493.77600000000035 100.0);
+	 }
+	 contour_xz_0.6
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 506 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 502.34500000000037 0) (915.6509246826172 510.34500000000037 100.0);
+	 }
+	 contour_xz_0.62
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 522 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 518.9140000000003 0) (915.6509246826172 526.9140000000003 100.0);
+	 }
+	 contour_xz_0.64
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 539 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 535.4830000000003 0) (915.6509246826172 543.4830000000003 100.0);
+	 }
+	 contour_xz_0.66
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 556 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 552.0520000000002 0) (915.6509246826172 560.0520000000002 100.0);
+	 }
+	 contour_xz_0.68
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 572 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 568.6210000000002 0) (915.6509246826172 576.6210000000002 100.0);
+	 }
+	 contour_xz_0.7
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 589 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 585.1900000000002 0) (915.6509246826172 593.1900000000002 100.0);
+	 }
+	 contour_xz_0.72
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 605 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 601.7590000000001 0) (915.6509246826172 609.7590000000001 100.0);
+	 }
+	 contour_xz_0.74
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 622 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 618.3280000000001 0) (915.6509246826172 626.3280000000001 100.0);
+	 }
+	 contour_xz_0.76
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 638 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 634.897 0) (915.6509246826172 642.897 100.0);
+	 }
+	 contour_xz_0.78
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 655 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 651.466 0) (915.6509246826172 659.466 100.0);
+	 }
+	 contour_xz_0.8
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 672 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 668.035 0) (915.6509246826172 676.035 100.0);
+	 }
+	 contour_xz_0.82
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 688 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 684.6039999999999 0) (915.6509246826172 692.6039999999999 100.0);
+	 }
+	 contour_xz_0.84
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 705 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 701.1729999999999 0) (915.6509246826172 709.1729999999999 100.0);
+	 }
+	 contour_xz_0.86
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 721 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 717.7419999999998 0) (915.6509246826172 725.7419999999998 100.0);
+	 }
+	 contour_xz_0.88
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 738 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 734.3109999999998 0) (915.6509246826172 742.3109999999998 100.0);
+	 }
+	 contour_xz_0.9
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 754 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 750.8799999999998 0) (915.6509246826172 758.8799999999998 100.0);
+	 }
+	 contour_xz_0.92
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 771 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 767.4489999999997 0) (915.6509246826172 775.4489999999997 100.0);
+	 }
+	 contour_xz_0.94
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 788 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 784.0179999999997 0) (915.6509246826172 792.0179999999997 100.0);
+	 }
+	 contour_xz_0.96
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 804 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 800.5869999999996 0) (915.6509246826172 808.5869999999996 100.0);
+	 }
+	 contour_xz_0.98
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 821 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 817.1559999999996 0) (915.6509246826172 825.1559999999996 100.0);
+	 }
+	 contour_xz_1
+	 {
+		 type plane;
+		 planeType   pointAndNormal;
+		pointAndNormalDict 
+		{
+			point  (0 837 0);
+			normal (0 1 0);
+		}
+		 interpolate     true;
+bounds  (-371.6879119873047 833.7249999999996 0) (915.6509246826172 841.7249999999996 100.0);
+	 }
+);

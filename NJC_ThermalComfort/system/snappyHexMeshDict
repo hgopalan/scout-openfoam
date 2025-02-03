@@ -1,0 +1,157 @@
+/*--------------------------------*- C++ -*----------------------------------*\ 
+| =========                 |                                                 |
+| \      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \    /   O peration     | Version:  v1812                                |
+|   \  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+version     2.0;
+format      ascii;
+class       dictionary;
+object     snappyHexMeshDict;
+}
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * // 
+
+castellatedMesh true;
+snap	  true;
+addLayers		  false;
+
+
+geometry
+{
+NJC_Aesthetic.stl
+{
+ type triSurfaceMesh;
+ name NJC_Aesthetic;
+}
+NJC_Main.stl
+{
+ type triSurfaceMesh;
+ name NJC_Main;
+}
+NJC_TD_Block.stl
+{
+ type triSurfaceMesh;
+ name NJC_TD_Block;
+}
+NJC_Weights_Room.stl
+{
+ type triSurfaceMesh;
+ name NJC_Weights_Room;
+}
+}
+castellatedMeshControls
+{
+locationInMesh (271.981506 423.500000 130.000000);
+maxLocalCells 8000000;
+maxGlobalCells 160000000;
+minRefinementCells 25;
+nCellsBetweenLevels 3;
+maxLoadUnbalance 0.10;
+resolveFeatureAngle 10;
+allowFreeStandingZoneFaces false;
+features
+(
+{ file "NJC_Aesthetic.eMesh"; levels ((0.1 2) (0.25 1) (0.55 0));}
+{ file "NJC_Main.eMesh"; levels ((0.1 2) (0.25 1) (0.55 0));}
+{ file "NJC_TD_Block.eMesh"; levels ((0.1 2) (0.25 1) (0.55 0));}
+{ file "NJC_Weights_Room.eMesh"; levels ((0.1 2) (0.25 1) (0.55 0));}
+);
+
+
+refinementSurfaces
+{
+NJC_Aesthetic
+{
+level (0 2);
+}
+NJC_Main
+{
+level (0 2);
+}
+NJC_TD_Block
+{
+level (0 2);
+}
+NJC_Weights_Room
+{
+level (0 2);
+}
+}
+
+
+refinementRegions
+{
+
+}
+
+}
+
+snapControls
+{
+nSmoothPatch 3;
+tolerance 2;
+nSolveIter 30;
+nRelaxIter 5;
+nFeatureSnapIter 10;
+explicitFeatureSnap true;
+multiRegionFeatureSnap true;
+implicitFeatureSnap false;
+strictRegionSnap true;
+}
+
+addLayersControls
+{
+relativeSizes true;
+layers
+{
+xxx123
+{
+nSurfaceLayers 1;
+}
+
+}
+expansionRatio 1.0;
+finalLayerThickness 0.3;
+minThickness 0.1;
+nGrow 0;
+featureAngle 10;
+slipFeatureAngle 30;
+nRelaxIter 3;
+nSmoothSurfaceNormals 1;
+nSmoothNormals 3;
+nSmoothThickness 10;
+maxFaceThicknessRatio 0.5;
+maxThicknessToMedialRatio 0.3;
+minMedianAxisAngle 90;
+nBufferCellsNoExtrude 0;
+nLayerIter 50;
+}
+
+meshQualityControls
+{
+maxNonOrtho 65;
+maxBoundarySkewness 20;
+maxInternalSkewness 4;
+maxConcave 80;
+minFlatness 0.5;
+minVol 0.05;
+minArea 0.05;
+minTwist 0.05;
+minDeterminant 0.001;
+minFaceWeight 0.05;
+minVolRatio 0.025;
+minTriangleTwist -0.99;
+nSmoothScale 4;
+errorReduction 0.75;
+minTetQuality 1E-30;
+}
+
+debug 0;
+mergeTolerance 1E-05;
+// ************************************************************************* // 
+

@@ -1,0 +1,43 @@
+/*--------------------------------*- C++ -*----------------------------------*\ 
+| =========                 |                                                 |
+| \      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \    /   O peration     | Version:  v1812                                |
+|   \  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+version     2.0;
+format      ascii;
+class       dictionary;
+location   constant;
+object     ABLDict;
+}
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * // 
+
+z0 0.6;
+ZRef 10.0;
+TZRef 2.0;
+mAvail 0.1;
+profileSize 2;
+solverType steadyHumid;
+fullSolver true;
+hotSpot false;
+callRadiation 50;
+Nudge true; 
+xWest -693.5226211547852;
+xEast 1237.4856338500977;
+ySouth -197.8375000000001;
+yNorth 1044.8375;
+zLower 200.0;
+zUpper 2502;
+xCoeff 0.11026080900567924;
+yCoeff 0.11304331154391795;
+zCoeff 0.03960693337397147;
+profileTable
+(
+	 (0 1.2246467991473532e-16 -2.0 303.15 0.02114001402146999 -139 579.0 4660.0 2.4492935982947064e-16 -4.0 303.65 0.019044536910240956)
+	 (100 1.2246467991473532e-16 -2.0 303.15 0.02114001402146999 -139 579.0 4660.0 2.4492935982947064e-16 -4.0 303.65 0.019044536910240956)
+);

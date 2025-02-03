@@ -1,0 +1,102 @@
+/*--------------------------------*- C++ -*----------------------------------*\ 
+| =========                 |                                                 |
+| \      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \    /   O peration     | Version:  v1812                                |
+|   \  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+version     2.0;
+format      ascii;
+class      volScalarField;
+location   0;
+object     qrSolar;
+}
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * // 
+
+dimensions	  [0 0 0 0 0 0 0];
+
+internalField	  uniform 0.0;
+
+boundaryField
+	{
+	 "procBoundary.*" 
+	 	 { 
+	 	 	 type processor;
+	 	}
+	 west 
+ 	 	 { 
+	 	 	 type greyDiffusiveRadiationViewFactor;
+	 	 	 value uniform 0.0;
+	 	 	 qro uniform 0.0;
+	 	 }
+	 east 
+ 	 	 { 
+	 	 	 type greyDiffusiveRadiationViewFactor;
+	 	 	 value uniform 0.0;
+	 	 	 qro uniform 0.0;
+	 	 }
+	 north 
+ 	 	 { 
+	 	 	 type greyDiffusiveRadiationViewFactor;
+	 	 	 value uniform 0.0;
+	 	 	 qro uniform 0.0;
+	 	 }
+	 south 
+ 	 	 { 
+	 	 	 type greyDiffusiveRadiationViewFactor;
+	 	 	 value uniform 0.0;
+	 	 	 qro uniform 0.0;
+	 	 }
+	 upper 
+ 	 	 { 
+	 	 	 type greyDiffusiveRadiationViewFactor;
+	 	 	 value uniform 0.0;
+	 	 	 qro uniform 0.0;
+	 	 }
+	 nonstl 
+ 	 	 { 
+	 	 	 type greyDiffusiveRadiationViewFactor;
+	 	 	 value uniform 0.0;
+	 	 	 qro uniform 0.0;
+	 	 }
+	 NJC_Aesthetic 
+ 	 	 { 
+	 	 	 type greyDiffusiveRadiationViewFactor;
+	 	 	 value uniform 0.0;
+	 	 	 qro uniform 0.0;
+	 	 }
+	 NJC_Main 
+ 	 	 { 
+	 	 	 type greyDiffusiveRadiationViewFactor;
+	 	 	 value uniform 0.0;
+	 	 	 qro uniform 0.0;
+	 	 }
+	 NJC_TD_Block 
+ 	 	 { 
+	 	 	 type greyDiffusiveRadiationViewFactor;
+	 	 	 value uniform 0.0;
+	 	 	 qro uniform 0.0;
+	 	 }
+	 NJC_Weights_Room 
+ 	 	 { 
+	 	 	 type greyDiffusiveRadiationViewFactor;
+	 	 	 value uniform 0.0;
+	 	 	 qro uniform 0.0;
+	 	 }
+	 bufferstl 
+ 	 	 { 
+	 	 	 type greyDiffusiveRadiationViewFactor;
+	 	 	 value uniform 0.0;
+	 	 	 qro uniform 0.0;
+	 	 }
+	 lower 
+ 	 	 { 
+	 	 	 type greyDiffusiveRadiationViewFactor;
+	 	 	 value uniform 0.0;
+	 	 	 qro uniform 0.0;
+	 	 }
+	}

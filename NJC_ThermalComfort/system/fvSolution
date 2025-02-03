@@ -1,0 +1,184 @@
+/*--------------------------------*- C++ -*----------------------------------*\ 
+| =========                 |                                                 |
+| \      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \    /   O peration     | Version:  v1812                                |
+|   \  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+version     2.0;
+format      ascii;
+class       dictionary;
+location   system;
+object     fvSolution;
+}
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * // 
+
+solvers
+{
+p_rgh
+{
+	 solver PBiCGStab;
+	 preconditioner DIC;
+	 tolerance        1e-12;
+	 relTol          0.1;
+}
+
+U
+{
+	 solver PBiCGStab;
+	 preconditioner DILU;
+	 tolerance        1e-12;
+	 relTol          0.001;
+}
+
+nut
+{
+	 solver PBiCGStab;
+	 preconditioner DILU;
+	 tolerance        1e-12;
+	 relTol          0.001;
+}
+
+T
+{
+	 solver PBiCGStab;
+	 preconditioner DILU;
+	 tolerance        1e-12;
+	 relTol          0.001;
+}
+
+qv
+{
+	 solver PBiCGStab;
+	 preconditioner DILU;
+	 tolerance        1e-12;
+	 relTol          0.001;
+}
+
+"(alpha.*)Final"
+{
+	 solver PBiCGStab;
+	 preconditioner DILU;
+	 tolerance        1e-12;
+	 relTol          0.001;
+}
+
+"(U.*)Final"
+{
+	 solver PBiCGStab;
+	 preconditioner DILU;
+	 tolerance        1e-12;
+	 relTol          0.001;
+}
+
+Phi
+{
+	 solver PBiCGStab;
+	 preconditioner DIC;
+	 tolerance        1e-12;
+	 relTol          0.0;
+}
+
+lambda
+{
+	 solver PBiCGStab;
+	 preconditioner DIC;
+	 tolerance        1e-12;
+	 relTol          0.0;
+}
+
+p_rghFinal
+{
+	 solver PBiCGStab;
+	 preconditioner DIC;
+	 tolerance        1e-12;
+	 relTol          0.1;
+}
+
+UFinal
+{
+	 solver PBiCGStab;
+	 preconditioner DILU;
+	 tolerance        1e-12;
+	 relTol          0.001;
+}
+
+nutFinal
+{
+	 solver PBiCGStab;
+	 preconditioner DILU;
+	 tolerance        1e-12;
+	 relTol          0.001;
+}
+
+TFinal
+{
+	 solver PBiCGStab;
+	 preconditioner DILU;
+	 tolerance        1e-12;
+	 relTol          0.001;
+}
+
+qvFinal
+{
+	 solver PBiCGStab;
+	 preconditioner DILU;
+	 tolerance        1e-12;
+	 relTol          0.001;
+}
+
+Ii
+{
+	 solver              GAMG;
+	 tolerance           1e-4;
+	 relTol              0.1;
+	 smoother            symGaussSeidel;
+	 maxIter             10;
+	 nPostSweeps         1;
+}
+}
+
+PIMPLE
+{
+	 momentumPredictor true;
+	 turbOnFinalIterOnly false;
+	 nOuterCorrectors 250;
+	 nCorrectors 1;
+	 nNonOrthogonalCorrectors 0;
+	 RefCell 0;
+	 pRefValue 0;
+residualControl
+{
+	 p_rgh
+{
+	 	 tolerance 1e-4;
+	 	 relTol 0;
+}
+}
+}
+relaxationFactors
+{
+fields
+{
+	 p_rgh 0.7;
+	 p_rghFinal 0.7;
+}
+equations
+{
+	 U 0.3;
+	 nut 0.5;
+	 T 0.5;
+	 qv 0.5;
+	 "ILambda.*" 1.0;
+"(alpha.*)Final" 0.7;
+"(U.*)Final" 0.7;
+	 UFinal 0.3;
+	 nutFinal 0.5;
+	 TFinal 0.5;
+	 qvFinal 0.5;
+}
+}

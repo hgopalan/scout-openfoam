@@ -1,0 +1,90 @@
+/*--------------------------------*- C++ -*----------------------------------*\ 
+| =========                 |                                                 |
+| \      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \    /   O peration     | Version:  v1812                                |
+|   \  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+version     2.0;
+format      ascii;
+class       dictionary;
+location   system;
+object     fvSchemes;
+}
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * // 
+
+ddtSchemes
+{
+default steadyState;
+}
+
+
+gradSchemes
+{
+	 default none;
+	 grad(U.component(2)) pointCellsLeastSquares;
+	 grad(T) cellMDLimited pointCellsLeastSquares 1.0;
+	 grad(qv) cellMDLimited pointCellsLeastSquares 1.0;
+	 grad(U) cellMDLimited pointCellsLeastSquares 1.0;
+	 grad(nut) cellMDLimited pointCellsLeastSquares 1.0;
+	 grad(p_rgh) pointCellsLeastSquares;
+	 grad(Ii_h) pointCellsLeastSquares;
+	 grad(lambda) cellMDLimited pointCellsLeastSquares 1.0;
+	 grad(Phi) cellMDLimited pointCellsLeastSquares 1.0;
+	 grad(rhok) cellMDLimited pointCellsLeastSquares 1.0;
+	 grad(mag(U)) cellMDLimited pointCellsLeastSquares 1.0;
+	 grad((sqrt((2*(symm(grad(U))&&grad(U))))+1e-15)) cellMDLimited pointCellsLeastSquares 1.0;
+	 "grad\((alpha.*)\)" cellMDLimited pointCellsLeastSquares 1.0;
+	 "grad\((U.*)\)" cellMDLimited pointCellsLeastSquares 1.0;
+	 "grad\(magSqr((U.*))\)" cellMDLimited pointCellsLeastSquares 1.0;
+}
+
+
+divSchemes
+{
+	 default none;
+	 div((nut*dev2(grad(U).T()))) Gauss linear;
+	 div(((1e-05+nut)*dev2(grad(U).T()))) Gauss linear;
+	 div(phi,U) bounded Gauss linearUpwind grad(U);
+	 div(phi,T) bounded Gauss linearUpwind grad(T);
+	 div(phi,qv) bounded Gauss linearUpwind grad(qv);
+	 div(phi,nut) bounded Gauss linearUpwind grad(nut);
+	 div(Ji,Ii_h) Gauss linearUpwind grad(Ii_h);
+	 div(U) Gauss vanLeerV phi 1.0;
+	 div(phirain,alpharain) bounded Gauss upwind;
+	 div(phiRain,Urain) bounded Gauss upwind;
+	 div((alpha*(-nutrain*grad(U).T()))) Gauss linear;
+}
+
+
+laplacianSchemes
+{
+	 default Gauss linear limited 1.0;
+}
+interpolationSchemes
+{
+	 default linear;
+}
+
+
+snGradSchemes
+{
+
+
+	 default limited 1.0;
+}
+wallDist
+{
+	 method meshWave;
+}
+fluxRequired
+{
+	 default no;
+	 p;
+	 p_rgh;
+}
+// ************************************************************************* //

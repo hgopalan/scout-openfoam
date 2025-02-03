@@ -1,0 +1,119 @@
+/*--------------------------------*- C++ -*----------------------------------*\ 
+| =========                 |                                                 |
+| \      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \    /   O peration     | Version:  v1812                                |
+|   \  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+version     2.0;
+format      ascii;
+class      volVectorField;
+location   0;
+object     U;
+}
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * // 
+
+dimensions	  [0 1 -1 0 0 0 0];
+
+internalField	  uniform (1.2246467991473532e-16 -2.0 0);
+
+boundaryField
+	{
+	 "procBoundary.*" 
+	 	 { 
+	 	 	 type processor;
+	 	}
+	 west 
+ 	 	 { 
+	 	 	 type unsteadyABLInflowU;
+	 	 	 ZRef 10.0;
+	 	 	 z0 0.6;
+	 	 	 value uniform ( 1.2246467991473532e-16  -2.0 0);
+;
+	 	 }
+	 east 
+ 	 	 { 
+	 	 	 type unsteadyABLInflowU;
+	 	 	 ZRef 10.0;
+	 	 	 z0 0.6;
+	 	 	 value uniform ( 1.2246467991473532e-16  -2.0 0);
+;
+	 	 }
+	 north 
+ 	 	 { 
+	 	 	 type unsteadyABLInflowU;
+	 	 	 ZRef 10.0;
+	 	 	 z0 0.6;
+	 	 	 value uniform ( 1.2246467991473532e-16  -2.0 0);
+;
+	 	 }
+	 south 
+ 	 	 { 
+	 	 	 type unsteadyABLInflowU;
+	 	 	 ZRef 10.0;
+	 	 	 z0 0.6;
+	 	 	 value uniform ( 1.2246467991473532e-16  -2.0 0);
+;
+	 	 }
+	 upper 
+ 	 	 { 
+	 	 	 type unsteadyABLInflowU;
+	 	 	 ZRef 10.0;
+	 	 	 z0 0.6;
+	 	 	 value uniform ( 1.2246467991473532e-16  -2.0 0);
+;
+	 	 }
+	 nonstl 
+ 	 	 { 
+	 	 	 type ABLMOWallU;
+	 	 	 z0 0.6;
+	 	 	 value uniform ( 1.2246467991473532e-16  -2.0 0);
+;
+	 	 }
+	 NJC_Aesthetic 
+ 	 	 { 
+	 	 	 type ABLLouisWallU;
+	 	 	 z0 0.6;
+	 	 	 value uniform ( 1.2246467991473532e-16  -2.0 0);
+;
+	 	 }
+	 NJC_Main 
+ 	 	 { 
+	 	 	 type ABLLouisWallU;
+	 	 	 z0 0.6;
+	 	 	 value uniform ( 1.2246467991473532e-16  -2.0 0);
+;
+	 	 }
+	 NJC_TD_Block 
+ 	 	 { 
+	 	 	 type ABLLouisWallU;
+	 	 	 z0 0.6;
+	 	 	 value uniform ( 1.2246467991473532e-16  -2.0 0);
+;
+	 	 }
+	 NJC_Weights_Room 
+ 	 	 { 
+	 	 	 type ABLLouisWallU;
+	 	 	 z0 0.6;
+	 	 	 value uniform ( 1.2246467991473532e-16  -2.0 0);
+;
+	 	 }
+	 bufferstl 
+ 	 	 { 
+	 	 	 type ABLLouisWallU;
+	 	 	 z0 0.6;
+	 	 	 value uniform ( 1.2246467991473532e-16  -2.0 0);
+;
+	 	 }
+	 lower 
+ 	 	 { 
+	 	 	 type ABLLouisWallU;
+	 	 	 z0 0.6;
+	 	 	 value uniform ( 1.2246467991473532e-16  -2.0 0);
+;
+	 	 }
+	}

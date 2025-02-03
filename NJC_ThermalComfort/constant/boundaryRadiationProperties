@@ -1,0 +1,139 @@
+/*--------------------------------*- C++ -*----------------------------------*\ 
+| =========                 |                                                 |
+| \      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \    /   O peration     | Version:  v1812                                |
+|   \  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+version     2.0;
+format      ascii;
+class       dictionary;
+location   constant;
+object     boundaryRadiationProperties;
+}
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * // 
+
+west
+{
+	 type        transparent;
+	 wallAbsorptionEmissionModel
+	 {
+	 	 type            multiBandAbsorption;
+	 	 emissivity      (1.000000);
+	 	 absorptivity    (0.000000);
+	}
+}
+east
+{
+	 type        transparent;
+	 wallAbsorptionEmissionModel
+	 {
+	 	 type            multiBandAbsorption;
+	 	 emissivity      (1.000000);
+	 	 absorptivity    (0.000000);
+	}
+}
+north
+{
+	 type        transparent;
+	 wallAbsorptionEmissionModel
+	 {
+	 	 type            multiBandAbsorption;
+	 	 emissivity      (1.000000);
+	 	 absorptivity    (0.000000);
+	}
+}
+south
+{
+	 type        transparent;
+	 wallAbsorptionEmissionModel
+	 {
+	 	 type            multiBandAbsorption;
+	 	 emissivity      (1.000000);
+	 	 absorptivity    (0.000000);
+	}
+}
+upper
+{
+	 type        transparent;
+	 wallAbsorptionEmissionModel
+	 {
+	 	 type            multiBandAbsorption;
+	 	 emissivity      (1.000000);
+	 	 absorptivity    (0.000000);
+	}
+}
+nonstl
+{
+	 type        transparent;
+	 wallAbsorptionEmissionModel
+	 {
+	 	 type            multiBandAbsorption;
+	 	 emissivity      (1.000000);
+	 	 absorptivity    (0.000000);
+	}
+}
+NJC_Aesthetic
+{
+	 type        opaqueDiffusive;
+	 wallAbsorptionEmissionModel
+	 {
+	 	 type            multiBandAbsorption;
+	 	 emissivity      (0.810000);
+	 	 absorptivity    (0.775000);
+	}
+}
+NJC_Main
+{
+	 type        opaqueDiffusive;
+	 wallAbsorptionEmissionModel
+	 {
+	 	 type            multiBandAbsorption;
+	 	 emissivity      (0.810000);
+	 	 absorptivity    (0.775000);
+	}
+}
+NJC_TD_Block
+{
+	 type        opaqueDiffusive;
+	 wallAbsorptionEmissionModel
+	 {
+	 	 type            multiBandAbsorption;
+	 	 emissivity      (0.810000);
+	 	 absorptivity    (0.775000);
+	}
+}
+NJC_Weights_Room
+{
+	 type        opaqueDiffusive;
+	 wallAbsorptionEmissionModel
+	 {
+	 	 type            multiBandAbsorption;
+	 	 emissivity      (0.810000);
+	 	 absorptivity    (0.775000);
+	}
+}
+bufferstl
+{
+	 type        opaqueDiffusive;
+	 wallAbsorptionEmissionModel
+	 {
+	 	 type            multiBandAbsorption;
+	 	 emissivity      (0.900000);
+	 	 absorptivity    (0.900000);
+	}
+}
+lower
+{
+	 type        opaqueDiffusive;
+	 wallAbsorptionEmissionModel
+	 {
+	 	 type            multiBandAbsorption;
+	 	 emissivity      (0.900000);
+	 	 absorptivity    (0.900000);
+	}
+}

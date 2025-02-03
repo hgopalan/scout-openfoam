@@ -1,0 +1,38 @@
+/*--------------------------------*- C++ -*----------------------------------*\ 
+| =========                 |                                                 |
+| \      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \    /   O peration     | Version:  v1812                                |
+|   \  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+version     2.0;
+format      ascii;
+class       dictionary;
+object     surfaceFeatureExtractDict;
+}
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * // 
+
+NJC_Aesthetic.stl
+	{
+		 extractionMethod    extractFromSurface;
+		 includedAngle       150;
+	}
+NJC_Main.stl
+	{
+		 extractionMethod    extractFromSurface;
+		 includedAngle       150;
+	}
+NJC_TD_Block.stl
+	{
+		 extractionMethod    extractFromSurface;
+		 includedAngle       150;
+	}
+NJC_Weights_Room.stl
+	{
+		 extractionMethod    extractFromSurface;
+		 includedAngle       150;
+	}

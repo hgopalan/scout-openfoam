@@ -1,0 +1,174 @@
+/*--------------------------------*- C++ -*----------------------------------*\ 
+| =========                 |                                                 |
+| \      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \    /   O peration     | Version:  v1812                                |
+|   \  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+version     2.0;
+format      ascii;
+class      volScalarField;
+location   0;
+object     T;
+}
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * // 
+
+dimensions	  [0 0 0 1 0 0 0];
+
+internalField	  uniform 303.15;
+
+boundaryField
+	{
+	 "procBoundary.*" 
+	 	 { 
+	 	 	 type processor;
+	 	}
+	 west 
+ 	 	 { 
+	 	 	 type unsteadyABLInflowT;
+	 	 	 z0 0.6;
+	 	 	 value uniform 303.15;
+	 	 }
+	 east 
+ 	 	 { 
+	 	 	 type unsteadyABLInflowT;
+	 	 	 z0 0.6;
+	 	 	 value uniform 303.15;
+	 	 }
+	 north 
+ 	 	 { 
+	 	 	 type unsteadyABLInflowT;
+	 	 	 z0 0.6;
+	 	 	 value uniform 303.15;
+	 	 }
+	 south 
+ 	 	 { 
+	 	 	 type unsteadyABLInflowT;
+	 	 	 z0 0.6;
+	 	 	 value uniform 303.15;
+	 	 }
+	 upper 
+ 	 	 { 
+	 	 	 type unsteadyABLInflowT;
+	 	 	 z0 0.6;
+	 	 	 value uniform 303.15;
+	 	 }
+	 nonstl 
+ 	 	 { 
+	 	 	 type unsteadyABLInflowT;
+	 	 	 z0 0.6;
+	 	 	 value uniform 303.15;
+	 	 }
+	 NJC_Aesthetic 
+ 	 	 { 
+	 	 	 type ABLLouisWallT;
+	 	 	 z0 0.6;
+	 	 	 mavail 0.1;
+	 	 	 matDensity (2400 2400 2400 2400);
+	 	 	 specificHeat (1000 1000 1000 1000);
+	 	 	 thermalCon (1.3 1.3 1.3 1.3);
+	 	 	 thickness (0.1 0.2 0.3 0.4);
+	 	 	 sensibleHeat uniform 0.0;
+	 	 	 Tw uniform 303.15;
+	 	 	 T1 uniform 300.575;
+	 	 	 T2 uniform 299.2875;
+	 	 	 T3 uniform 298.64375;
+	 	 	 T4 uniform 298.321875;
+	 	 	 Tdeep uniform 298.0;
+	 	 	 value uniform 303.15;
+	 	 }
+	 NJC_Main 
+ 	 	 { 
+	 	 	 type ABLLouisWallT;
+	 	 	 z0 0.6;
+	 	 	 mavail 0.1;
+	 	 	 matDensity (2400 2400 2400 2400);
+	 	 	 specificHeat (1000 1000 1000 1000);
+	 	 	 thermalCon (1.3 1.3 1.3 1.3);
+	 	 	 thickness (0.1 0.2 0.3 0.4);
+	 	 	 sensibleHeat uniform 0.0;
+	 	 	 Tw uniform 303.15;
+	 	 	 T1 uniform 300.575;
+	 	 	 T2 uniform 299.2875;
+	 	 	 T3 uniform 298.64375;
+	 	 	 T4 uniform 298.321875;
+	 	 	 Tdeep uniform 298.0;
+	 	 	 value uniform 303.15;
+	 	 }
+	 NJC_TD_Block 
+ 	 	 { 
+	 	 	 type ABLLouisWallT;
+	 	 	 z0 0.6;
+	 	 	 mavail 0.1;
+	 	 	 matDensity (2400 2400 2400 2400);
+	 	 	 specificHeat (1000 1000 1000 1000);
+	 	 	 thermalCon (1.3 1.3 1.3 1.3);
+	 	 	 thickness (0.1 0.2 0.3 0.4);
+	 	 	 sensibleHeat uniform 0.0;
+	 	 	 Tw uniform 303.15;
+	 	 	 T1 uniform 300.575;
+	 	 	 T2 uniform 299.2875;
+	 	 	 T3 uniform 298.64375;
+	 	 	 T4 uniform 298.321875;
+	 	 	 Tdeep uniform 298.0;
+	 	 	 value uniform 303.15;
+	 	 }
+	 NJC_Weights_Room 
+ 	 	 { 
+	 	 	 type ABLLouisWallT;
+	 	 	 z0 0.6;
+	 	 	 mavail 0.1;
+	 	 	 matDensity (2400 2400 2400 2400);
+	 	 	 specificHeat (1000 1000 1000 1000);
+	 	 	 thermalCon (1.3 1.3 1.3 1.3);
+	 	 	 thickness (0.1 0.2 0.3 0.4);
+	 	 	 sensibleHeat uniform 0.0;
+	 	 	 Tw uniform 303.15;
+	 	 	 T1 uniform 300.575;
+	 	 	 T2 uniform 299.2875;
+	 	 	 T3 uniform 298.64375;
+	 	 	 T4 uniform 298.321875;
+	 	 	 Tdeep uniform 298.0;
+	 	 	 value uniform 303.15;
+	 	 }
+	 bufferstl 
+ 	 	 { 
+	 	 	 type ABLLouisWallT;
+	 	 	 z0 0.6;
+	 	 	 mavail 0.1;
+	 	 	 matDensity (2000.0 2000.0 2000.0 2000.0);
+	 	 	 specificHeat (1000.0 1000.0 1000.0 1000.0);
+	 	 	 thermalCon (1.8 1.8 1.8 1.8);
+	 	 	 thickness (0.010000000000000002 0.020000000000000004 0.03 0.04000000000000001);
+	 	 	 sensibleHeat uniform 0.0;
+	 	 	 Tw uniform 303.15;
+	 	 	 T1 uniform 300.65;
+	 	 	 T2 uniform 299.4;
+	 	 	 T3 uniform 298.775;
+	 	 	 T4 uniform 298.4625;
+	 	 	 Tdeep uniform 298.15;
+	 	 	 value uniform 303.15;
+	 	 }
+	 lower 
+ 	 	 { 
+	 	 	 type ABLLouisWallT;
+	 	 	 z0 0.6;
+	 	 	 mavail 0.1;
+	 	 	 matDensity (2000.0 2000.0 2000.0 2000.0);
+	 	 	 specificHeat (1000.0 1000.0 1000.0 1000.0);
+	 	 	 thermalCon (1.8 1.8 1.8 1.8);
+	 	 	 thickness (0.010000000000000002 0.020000000000000004 0.03 0.04000000000000001);
+	 	 	 sensibleHeat uniform 0.0;
+	 	 	 Tw uniform 303.15;
+	 	 	 T1 uniform 300.65;
+	 	 	 T2 uniform 299.4;
+	 	 	 T3 uniform 298.775;
+	 	 	 T4 uniform 298.4625;
+	 	 	 Tdeep uniform 298.15;
+	 	 	 value uniform 303.15;
+	 	 }
+	}

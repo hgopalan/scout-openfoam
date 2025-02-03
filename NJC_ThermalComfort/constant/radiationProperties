@@ -1,0 +1,62 @@
+/*--------------------------------*- C++ -*----------------------------------*\ 
+| =========                 |                                                 |
+| \      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \    /   O peration     | Version:  v1812                                |
+|   \  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+version     2.0;
+format      ascii;
+class       dictionary;
+location   constant;
+object     radiationProperties;
+}
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * // 
+
+radiation on;
+radiationModel fvDOM;
+fvDOMCoeffs
+{
+	 nPhi 3;
+	 nTheta 5;
+	 tolerance 1e-2;
+	 maxIter 25;
+	 useSolarLoad true;
+	 useExternalBeam true;
+	 spectralDistribution (1);
+}
+"solarLoadCoeffs|solarCalculatorCoeffs"
+{
+	 noTrees false;
+	 sunDirectionModel sunDirTrackingAdv;
+	 sunLoadModel LiuJordan;
+	 sunTrackingUpdateInterval 300;
+	 localStandardMeridian 8;
+	 startDay 116;
+	 startTime 16.0;
+	 longitude 103.82;
+	 latitude  1.25;
+	 gridUp (0 0 1);
+	 gridEast (1 0 0);
+	 spectralDistribution (1);
+	 solidCoupled false;
+	 wallCoupled true;
+	 profilesize 25000;
+	useReflectedRays false;
+	 C 0.5;
+	 #include "../solar.data"
+}
+solverFreq 1;
+absorptionEmissionModel porousMediaAbsorptionEmission;
+porousMediaAbsorptionEmissionCoeffs
+	{
+		 absorptivity  0.0;
+		 emissivity    0.0;
+		 E    0.0 ;
+	}
+scatterModel none;
+sootModel none;

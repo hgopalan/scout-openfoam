@@ -1,0 +1,126 @@
+/*--------------------------------*- C++ -*----------------------------------*\ 
+| =========                 |                                                 |
+| \      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \    /   O peration     | Version:  v1812                                |
+|   \  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+version     2.0;
+format      ascii;
+class      volScalarField;
+location   0;
+object     qv;
+}
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * // 
+
+dimensions	  [0 0 0 0 0 0 0];
+
+internalField	  uniform 0.02114001402146999;
+
+boundaryField
+	{
+	 "procBoundary.*" 
+	 	 { 
+	 	 	 type processor;
+	 	}
+	 west 
+ 	 	 { 
+	 	 	 type unsteadyABLInflowQv;
+	 	 	 z0 0.6;
+	 	 	 value uniform  0.02114001402146999;
+;
+	 	 }
+	 east 
+ 	 	 { 
+	 	 	 type unsteadyABLInflowQv;
+	 	 	 z0 0.6;
+	 	 	 value uniform  0.02114001402146999;
+;
+	 	 }
+	 north 
+ 	 	 { 
+	 	 	 type unsteadyABLInflowQv;
+	 	 	 z0 0.6;
+	 	 	 value uniform  0.02114001402146999;
+;
+	 	 }
+	 south 
+ 	 	 { 
+	 	 	 type unsteadyABLInflowQv;
+	 	 	 z0 0.6;
+	 	 	 value uniform  0.02114001402146999;
+;
+	 	 }
+	 upper 
+ 	 	 { 
+	 	 	 type unsteadyABLInflowQv;
+	 	 	 z0 0.6;
+	 	 	 value uniform  0.02114001402146999;
+;
+	 	 }
+	 nonstl 
+ 	 	 { 
+	 	 	 type unsteadyABLInflowQv;
+	 	 	 z0 0.6;
+	 	 	 value uniform  0.02114001402146999;
+;
+	 	 }
+	 NJC_Aesthetic 
+ 	 	 { 
+	 	 	 type ABLLouisWallQv;
+	 	 	 z0 0.6;
+	 	 	 mavail 0.1;
+	 	 	 sensibleHeat uniform 0;
+	 	 	 value uniform  0.02114001402146999;
+;
+	 	 }
+	 NJC_Main 
+ 	 	 { 
+	 	 	 type ABLLouisWallQv;
+	 	 	 z0 0.6;
+	 	 	 mavail 0.1;
+	 	 	 sensibleHeat uniform 0;
+	 	 	 value uniform  0.02114001402146999;
+;
+	 	 }
+	 NJC_TD_Block 
+ 	 	 { 
+	 	 	 type ABLLouisWallQv;
+	 	 	 z0 0.6;
+	 	 	 mavail 0.1;
+	 	 	 sensibleHeat uniform 0;
+	 	 	 value uniform  0.02114001402146999;
+;
+	 	 }
+	 NJC_Weights_Room 
+ 	 	 { 
+	 	 	 type ABLLouisWallQv;
+	 	 	 z0 0.6;
+	 	 	 mavail 0.1;
+	 	 	 sensibleHeat uniform 0;
+	 	 	 value uniform  0.02114001402146999;
+;
+	 	 }
+	 bufferstl 
+ 	 	 { 
+	 	 	 type ABLLouisWallQv;
+	 	 	 z0 0.6;
+	 	 	 mavail 0.1;
+	 	 	 sensibleHeat uniform 0;
+	 	 	 value uniform  0.02114001402146999;
+;
+	 	 }
+	 lower 
+ 	 	 { 
+	 	 	 type ABLLouisWallQv;
+	 	 	 z0 0.6;
+	 	 	 mavail 0.1;
+	 	 	 sensibleHeat uniform 0;
+	 	 	 value uniform  0.02114001402146999;
+;
+	 	 }
+	}
